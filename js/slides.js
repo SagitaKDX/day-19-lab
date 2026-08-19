@@ -150,8 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ================= OFFICIAL RUBRIC RENDERER (CORE, ADVANCED, BONUS) =================
+  // ================= INTERACTIVE RUBRIC CHECKLIST (CORE, ADVANCED, BONUS) =================
   window.currentRubricTab = 'core';
+  const rubricCheckedState = {};
+
   window.switchRubricTab = function(tabName) {
     window.currentRubricTab = tabName;
     const tabBtns = document.querySelectorAll('.rubric-tab-btn');
@@ -166,85 +168,137 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentContainer = document.getElementById('rubric-table-content');
     if (!contentContainer || !LAB_19_DATA) return;
 
+    let items = [];
+    let maxPts = 100;
+    let badgeClass = "bg-blue-50 text-blue-700 border-blue-200";
+    let title = "Khối Core (NB1 – NB4)";
+
     if (tabName === 'core') {
-      contentContainer.innerHTML = `
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="border-b-2 border-slate-200 text-slate-600">
-                <th class="py-1.5 pl-2">Notebook</th>
-                <th class="py-1.5">Tiêu Chí Đánh Giá Nghiệm Thu</th>
-                <th class="py-1.5 text-right pr-2">Điểm</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              ${LAB_19_DATA.rubricCore.map(item => `
-                <tr class="hover:bg-blue-50/40 transition">
-                  <td class="py-1.5 pl-2 font-mono text-blue-700 font-bold whitespace-nowrap">${item.nb}</td>
-                  <td class="py-1.5 text-slate-800 font-medium">${item.criterion}</td>
-                  <td class="py-1.5 text-right pr-2 font-mono font-bold text-slate-900">${item.pts} đ</td>
-                </tr>
-              `).join('')}
-              <tr class="bg-blue-50 font-bold border-t-2 border-blue-200">
-                <td class="py-2 pl-2 text-blue-900" colspan="2">Tổng Điểm Khối Core (Bắt buộc đạt tối thiểu 70đ)</td>
-                <td class="py-2 text-right pr-2 font-mono text-blue-900 font-black">100 đ</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      `;
+      items = LAB_19_DATA.rubricCore;
+      maxPts = 100;
+      badgeClass = "bg-blue-50 text-blue-700 border-blue-200";
+      title = "Khối Core Bắt Buộc";
     } else if (tabName === 'advanced') {
-      contentContainer.innerHTML = `
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="border-b-2 border-slate-200 text-slate-600">
-                <th class="py-1.5 pl-2">Notebook</th>
-                <th class="py-1.5">Tiêu Chí Đánh Giá Khối Mở Rộng 2026</th>
-                <th class="py-1.5 text-right pr-2">Điểm</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              ${LAB_19_DATA.rubricAdvanced.map(item => `
-                <tr class="hover:bg-red-50/40 transition">
-                  <td class="py-1.5 pl-2 font-mono text-red-700 font-bold whitespace-nowrap">${item.nb}</td>
-                  <td class="py-1.5 text-slate-800 font-medium">${item.criterion}</td>
-                  <td class="py-1.5 text-right pr-2 font-mono font-bold text-slate-900">${item.pts} đ</td>
-                </tr>
-              `).join('')}
-              <tr class="bg-red-50 font-bold border-t-2 border-red-200">
-                <td class="py-2 pl-2 text-red-900" colspan="2">Tổng Điểm Khối Nâng Cao (NB5 - NB8)</td>
-                <td class="py-2 text-right pr-2 font-mono text-red-900 font-black">50 đ</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      `;
+      items = LAB_19_DATA.rubricAdvanced;
+      maxPts = 50;
+      badgeClass = "bg-red-50 text-red-700 border-red-200";
+      title = "Khối Nâng Cao (NB5 – NB8)";
     } else if (tabName === 'bonus') {
-      contentContainer.innerHTML = `
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="border-b-2 border-slate-200 text-slate-600">
-                <th class="py-1.5 pl-2">Tiêu Chí Thử Thách Bonus (Tùy Chọn)</th>
-                <th class="py-1.5 text-right pr-2">Điểm Thưởng</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              ${LAB_19_DATA.rubricBonus.map(item => `
-                <tr class="hover:bg-emerald-50/40 transition">
-                  <td class="py-1.5 pl-2 text-slate-800 font-medium">${item.criterion}</td>
-                  <td class="py-1.5 text-right pr-2 font-mono font-bold text-emerald-700">+${item.pts} đ</td>
-                </tr>
-              `).join('')}
-              <tr class="bg-emerald-50 font-bold border-t-2 border-emerald-200">
-                <td class="py-2 pl-2 text-emerald-900">Tổng Điểm Thưởng Bonus Challenge (Hybrid Memory Agent)</td>
-                <td class="py-2 text-right pr-2 font-mono text-emerald-900 font-black">+20 đ</td>
-              </tr>
-            </tbody>
-          </table>
+      items = LAB_19_DATA.rubricBonus;
+      maxPts = 20;
+      badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
+      title = "Thử Thách Bonus Challenge";
+    }
+
+    // Group items by Notebook
+    const grouped = {};
+    items.forEach(item => {
+      const groupKey = item.nb || "Bonus Challenge";
+      if (!grouped[groupKey]) grouped[groupKey] = [];
+      grouped[groupKey].push(item);
+    });
+
+    contentContainer.innerHTML = `
+      <div class="space-y-3">
+        <!-- Live Score Summary Bar -->
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+          <div class="flex items-center justify-between text-xs text-slate-700">
+            <span id="rubric-progress-text" class="font-bold">Tiến độ tích lũy: <strong>0/${maxPts} điểm</strong> (0/${items.length} tiêu chí)</span>
+            <span class="font-mono text-emerald-700 font-bold" id="rubric-status-badge">Chưa hoàn tất</span>
+          </div>
+          <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+            <div id="rubric-progress-bar" class="h-full bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full transition-all duration-300" style="width: 0%;"></div>
+          </div>
         </div>
-      `;
+
+        <!-- Checklist Cards Grouped by Notebook -->
+        <div class="space-y-2.5 max-h-[50vh] overflow-y-auto pr-1">
+          ${Object.keys(grouped).map(groupName => `
+            <div class="p-3 bg-white rounded-xl border-2 border-slate-200 shadow-sm space-y-1.5">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-1">
+                <span class="font-mono text-xs font-black text-blue-700">${groupName}</span>
+                <span class="text-[11px] text-slate-500 font-bold">${grouped[groupName].reduce((s, x) => s + x.pts, 0)} pts</span>
+              </div>
+              <div class="space-y-1 pt-1">
+                ${grouped[groupName].map(item => `
+                  <label class="flex items-start justify-between gap-2 text-xs text-slate-700 cursor-pointer select-none p-1.5 rounded-lg hover:bg-slate-50 border border-transparent transition" id="label-${item.id}">
+                    <div class="flex items-start gap-2">
+                      <input type="checkbox" id="${item.id}" onchange="updateRubricChecklist('${tabName}')" class="rubric-check-item mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" ${rubricCheckedState[item.id] ? 'checked' : ''}>
+                      <span class="font-medium leading-tight">${item.criterion}</span>
+                    </div>
+                    <span class="font-mono font-bold text-[11px] px-2 py-0.5 rounded ${badgeClass} border whitespace-nowrap shrink-0">+${item.pts}đ</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    updateRubricChecklist(tabName);
+  };
+
+  window.updateRubricChecklist = function(tabName) {
+    let items = [];
+    let maxPts = 100;
+    if (tabName === 'core') {
+      items = LAB_19_DATA.rubricCore;
+      maxPts = 100;
+    } else if (tabName === 'advanced') {
+      items = LAB_19_DATA.rubricAdvanced;
+      maxPts = 50;
+    } else if (tabName === 'bonus') {
+      items = LAB_19_DATA.rubricBonus;
+      maxPts = 20;
+    }
+
+    let earnedPts = 0;
+    let checkedCount = 0;
+
+    items.forEach(item => {
+      const chk = document.getElementById(item.id);
+      const lbl = document.getElementById(`label-${item.id}`);
+      if (chk) {
+        rubricCheckedState[item.id] = chk.checked;
+        if (chk.checked) {
+          earnedPts += item.pts;
+          checkedCount += 1;
+          if (lbl) {
+            lbl.classList.add('bg-emerald-50/70', 'border-emerald-200');
+          }
+        } else {
+          if (lbl) {
+            lbl.classList.remove('bg-emerald-50/70', 'border-emerald-200');
+          }
+        }
+      } else if (rubricCheckedState[item.id]) {
+        earnedPts += item.pts;
+        checkedCount += 1;
+      }
+    });
+
+    const progressBar = document.getElementById('rubric-progress-bar');
+    const progressText = document.getElementById('rubric-progress-text');
+    const statusBadge = document.getElementById('rubric-status-badge');
+
+    const pct = Math.min(100, Math.round((earnedPts / maxPts) * 100));
+
+    if (progressBar) progressBar.style.width = `${pct}%`;
+    if (progressText) {
+      progressText.innerHTML = `Điểm tích lũy: <strong class="text-blue-700">${earnedPts}/${maxPts} điểm</strong> (${checkedCount}/${items.length} tiêu chí)`;
+    }
+    if (statusBadge) {
+      if (earnedPts >= maxPts) {
+        statusBadge.innerHTML = `🎉 100% HOÀN HẢO (${earnedPts}đ)`;
+        statusBadge.className = "font-mono text-emerald-700 font-bold";
+      } else if (earnedPts >= (maxPts * 0.7)) {
+        statusBadge.innerHTML = `✔ ĐẠT CHUẨN (${earnedPts}đ)`;
+        statusBadge.className = "font-mono text-blue-700 font-bold";
+      } else {
+        statusBadge.innerHTML = `Tiến độ: ${pct}%`;
+        statusBadge.className = "font-mono text-slate-500 font-bold";
+      }
     }
   };
 
