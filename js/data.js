@@ -1,5 +1,5 @@
 /**
- * data.js - Metadata, Gates, Rubrics, Notebook Roadmaps, and Anti-Patterns for Day 19 Lab Guide
+ * data.js - Metadata, Gates, Rubrics, Checklist, and Anti-Patterns for Day 19 Lab Guide
  * VinUni Codelab - AICB Track 2: Vector Store + Feature Store
  */
 
@@ -8,6 +8,8 @@ const LAB_19_DATA = {
   cohort: "AICB-P2T2",
   author: "VinUni Codelab",
   durationMinutes: 180,
+  repoNamingPattern: "Track2_Day19_MSV_HoVaTen",
+  repoNamingExample: "Track2_Day19_20260012_NguyenVanA",
   deliverables: [
     {
       id: "del1",
@@ -51,66 +53,61 @@ const LAB_19_DATA = {
   gates: [
     {
       id: 1,
-      title: "GATE 1 — Vector Index Integrity",
+      title: "GATE 1 — Vector Index Integrity (NB1)",
       notebook: "01_embeddings_index",
       pts: 20,
-      passCriteria: [
-        "client.count('lab19').count == 1000",
-        "Top-5 kết quả cho keyword query hiển thị rõ",
-        "Paraphrase query không chứa từ khoá trực tiếp vẫn trả về đúng cụm chủ đề liên quan"
-      ],
-      failTrap: "Dùng sai model dẫn tới số chiều vector không khớp 384d, hoặc index thiếu tài liệu."
+      items: [
+        { id: "g1_1", text: "client.count('lab19').count == 1000 (Index đủ 1.000 documents)" },
+        { id: "g1_2", text: "Top-5 kết quả cho keyword query hiển thị chính xác" },
+        { id: "g1_3", text: "Top-5 paraphrase query (không chứa từ 'cloud') vẫn trả về đúng cụm điện toán đám mây" }
+      ]
     },
     {
       id: 2,
-      title: "GATE 2 — Hybrid RRF Superiority",
+      title: "GATE 2 — Hybrid RRF Superiority (NB2)",
       notebook: "02_hybrid_search_rrf",
       pts: 25,
-      passCriteria: [
-        "Thuật toán RRF chuẩn: 1 / (60 + rank), với rank là 1-based (bắt đầu từ 1, không phải 0)",
-        "Bảng Precision@10 trung bình: Hybrid > BM25 Keyword VÀ Hybrid > Semantic Vector",
-        "Slice query phân tích rõ: Hybrid thắng ở mixed queries, Vector thắng ở paraphrase, BM25 thắng ở exact"
-      ],
-      failTrap: "Để rank 0-based khiến phần tử đầu tiên bị chia cho 60 thay vì 61, gây sai lệch trọng số."
+      items: [
+        { id: "g2_1", text: "Thuật toán RRF chuẩn: 1 / (60 + rank), với rank là 1-based (bắt đầu từ 1)" },
+        { id: "g2_2", text: "Bảng Precision@10 trung bình: Hybrid > BM25 Keyword VÀ Hybrid > Semantic Vector" },
+        { id: "g2_3", text: "Slice query phân tích rõ: Hybrid thắng mixed, Vector thắng paraphrase, BM25 thắng exact" }
+      ]
     },
     {
       id: 3,
-      title: "GATE 3 — Low Latency REST API",
+      title: "GATE 3 — Low Latency REST API (NB3)",
       notebook: "03_search_api_benchmark",
       pts: 25,
-      passCriteria: [
-        "FastAPI GET /search trả về đúng schema SearchResponse chứa metadata và latency_ms",
-        "In bảng latency P50 / P95 / P99 được đo lường chính xác phía server",
-        "Hybrid P99 server-side < 50ms sau khi thực hiện warm-up"
-      ],
-      failTrap: "Quên warm-up trước khi benchmark làm phát sinh cold-start spike vượt quá 50ms."
+      items: [
+        { id: "g3_1", text: "FastAPI GET /search trả về đúng schema SearchResponse chứa latency_ms" },
+        { id: "g3_2", text: "Bảng latency P50 / P95 / P99 được đo lường chính xác phía server" },
+        { id: "g3_3", text: "Đã warm-up server và đo Hybrid P99 < 50ms" }
+      ]
     },
     {
       id: 4,
-      title: "GATE 4 — Feast Materialization & PIT Consistency",
+      title: "GATE 4 — Feast Materialization & PIT Consistency (NB4)",
       notebook: "04_feast_feature_store",
       pts: 30,
-      passCriteria: [
-        "feast apply thành công đăng ký cả 3 feature views",
-        "materialize-incremental đẩy dữ liệu vào Online Store",
-        "get_online_features(user_id='u_001') hoạt động với P99 < 10ms",
-        "Point-in-Time historical join trả về đúng 3 dòng x N features không dính data leakage"
-      ],
-      failTrap: "Sử dụng Latest Join thay vì PIT Join dẫn đến rò rỉ dữ liệu tương lai vào tập huấn luyện."
+      items: [
+        { id: "g4_1", text: "feast apply thành công đăng ký cả 3 feature views" },
+        { id: "g4_2", text: "materialize-incremental đẩy dữ liệu vào Online Store" },
+        { id: "g4_3", text: "get_online_features(user_id='u_001') hoạt động với P99 < 10ms" },
+        { id: "g4_4", text: "Point-in-Time historical join trả về đúng 3 dòng x N features (Không dính data leak)" }
+      ]
     },
     {
       id: 5,
       title: "GATE 5 — Clean Reproducibility & LMS Submission",
       notebook: "All Notebooks + Submission",
       pts: "Overall",
-      passCriteria: [
-        "Chạy thành công trên môi trường sạch qua lệnh: bash setup-lite.sh && make benchmark",
-        "4 Notebooks Core được nộp dưới dạng .ipynb kèm toàn bộ output cells đã thực thi",
-        "Ảnh chụp màn hình kết quả tại submission/screenshots/ đầy đủ",
-        "Điền hoàn chỉnh submission/REFLECTION.md (<= 200 chữ phân tích so sánh 3 modes)",
-        "Repo GitHub được mở Public và dán link vào VinUni LMS"
-      ],
-      failTrap: "Để repo GitHub ở chế độ Private (0 điểm tự động) hoặc nộp notebook rỗng không có output."
+      items: [
+        { id: "g5_1", text: "Chạy thành công từ máy sạch: bash setup-lite.sh && make benchmark" },
+        { id: "g5_2", text: "4 Notebooks Core (.ipynb) giữ nguyên toàn bộ output cells đã thực thi" },
+        { id: "g5_3", text: "Thư mục submission/screenshots/ chứa đầy đủ ảnh chụp từng notebook" },
+        { id: "g5_4", text: "submission/REFLECTION.md điền đầy đủ (<= 200 chữ so sánh 3 modes)" },
+        { id: "g5_5", text: "Tên repo chuẩn Track2_Day19_MSV_HoVaTen, bật chế độ PUBLIC và dán link vào LMS" }
+      ]
     }
   ],
   antiPatterns: [

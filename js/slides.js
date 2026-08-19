@@ -1,6 +1,6 @@
 /**
- * slides.js - Presentation Controller, Simulator Hooks, KaTeX Auto-Renderer & Quiz Logic
- * Controls 16 Slides, Fullscreen, Keyboard Shortcuts, Simulators and Quizzes (Light Theme with Hover Glow).
+ * slides.js - Presentation Controller, Simulator Hooks, KaTeX Auto-Renderer, Interactive Checklists & Quiz Logic
+ * Controls 16 Slides, Fullscreen, Keyboard Shortcuts, Simulators, Checklists, Repo Name Generator and Quizzes.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -105,6 +105,106 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // ================= REPO NAME GENERATOR & VALIDATOR =================
+  window.updateRepoNamePreview = function() {
+    const msvInput = document.getElementById('repo-msv-input');
+    const nameInput = document.getElementById('repo-name-input');
+    const previewEl = document.getElementById('repo-name-preview');
+    const copyBtn = document.getElementById('btn-copy-repo-name');
+
+    if (!previewEl) return;
+
+    let msv = msvInput ? msvInput.value.trim() : "";
+    let name = nameInput ? nameInput.value.trim() : "";
+
+    // Convert Vietnamese Diacritics to clean alphanumeric PascalCase
+    const cleanName = name
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+      .replace(/[^a-zA-Z0-9\s]/g, '')
+      .split(/\s+/)
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+      .join('');
+
+    const cleanMsv = msv.replace(/[^a-zA-Z0-9]/g, '');
+
+    const displayMsv = cleanMsv || "MSV";
+    const displayFullName = cleanName || "HoVaTen";
+
+    const generatedName = `Track2_Day19_${displayMsv}_${displayFullName}`;
+    previewEl.innerText = generatedName;
+
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(generatedName).then(() => {
+          const origText = copyBtn.innerHTML;
+          copyBtn.innerHTML = `✔ Đã Copy!`;
+          copyBtn.className = "px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-mono text-xs font-bold transition shadow";
+          setTimeout(() => {
+            copyBtn.innerHTML = origText;
+            copyBtn.className = "px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold transition shadow";
+          }, 2000);
+        });
+      };
+    }
+  };
+
+  // ================= INTERACTIVE 5 GATES CHECKLIST =================
+  window.initGatesChecklist = function() {
+    const container = document.getElementById('gates-interactive-container');
+    if (!container || !LAB_19_DATA || !LAB_19_DATA.gates) return;
+
+    container.innerHTML = '';
+    LAB_19_DATA.gates.forEach((gate, gIdx) => {
+      const gateCard = document.createElement('div');
+      gateCard.className = "p-3.5 bg-white rounded-xl border-2 border-slate-200 shadow-sm hover-glow-box space-y-2";
+      gateCard.innerHTML = `
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded font-mono text-xs font-bold ${gIdx === 1 ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}">
+              GATE ${gate.id} · ${gate.pts === 'Overall' ? 'LMS' : gate.pts + ' pts'}
+            </span>
+            <h4 class="text-xs md:text-sm font-extrabold text-slate-900">${gate.title}</h4>
+          </div>
+          <span class="font-mono text-xs font-bold text-slate-500">${gate.notebook}</span>
+        </div>
+        <div class="space-y-1.5 pt-1">
+          ${gate.items ? gate.items.map(item => `
+            <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer select-none p-1 rounded hover:bg-slate-50">
+              <input type="checkbox" id="${item.id}" onchange="updateGatesProgress()" class="gate-checkbox mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+              <span class="font-medium">${item.text}</span>
+            </label>
+          `).join('') : ''}
+        </div>
+      `;
+      container.appendChild(gateCard);
+    });
+    updateGatesProgress();
+  };
+
+  window.updateGatesProgress = function() {
+    const allCheckboxes = document.querySelectorAll('.gate-checkbox');
+    const checkedCheckboxes = document.querySelectorAll('.gate-checkbox:checked');
+    const progressBar = document.getElementById('gates-progress-bar');
+    const progressText = document.getElementById('gates-progress-text');
+
+    if (!allCheckboxes.length) return;
+
+    const total = allCheckboxes.length;
+    const count = checkedCheckboxes.length;
+    const pct = Math.round((count / total) * 100);
+
+    if (progressBar) progressBar.style.width = `${pct}%`;
+    if (progressText) {
+      if (pct === 100) {
+        progressText.innerHTML = `🎉 <strong class="text-emerald-700">100% ĐẠT CHUẨN (${count}/${total} tiêu chí) — Đã sẵn sàng nộp bài!</strong>`;
+      } else {
+        progressText.innerHTML = `Tiến độ kiểm định: <strong>${count}/${total}</strong> tiêu chí (${pct}%)`;
+      }
+    }
+  };
+
   // ================= QUIZ INITIALIZATION =================
   window.initQuizzes = function() {
     const quizContainer = document.getElementById('quiz-questions-list');
@@ -166,5 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Run initializations
   showSlide(0);
   window.initQuizzes();
+  window.initGatesChecklist();
+  window.updateRepoNamePreview();
   setTimeout(renderLatexMath, 300);
 });
