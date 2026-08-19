@@ -1,5 +1,5 @@
 /**
- * slides.js - Presentation Controller, Simulator Hooks, KaTeX Auto-Renderer, Interactive Checklists & Quiz Logic
+ * slides.js - Presentation Controller, Simulator Hooks, KaTeX Auto-Renderer, Interactive Checklists, Rubric Tabs & Quiz Logic
  * Controls 17 Slides, Fullscreen, Keyboard Shortcuts, Simulators, Checklists, Repo Name Generator and Quizzes.
  */
 
@@ -150,58 +150,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ================= INTERACTIVE 5 GATES CHECKLIST =================
-  window.initGatesChecklist = function() {
-    const container = document.getElementById('gates-interactive-container');
-    if (!container || !LAB_19_DATA || !LAB_19_DATA.gates) return;
+  // ================= OFFICIAL RUBRIC RENDERER (CORE, ADVANCED, BONUS) =================
+  window.currentRubricTab = 'core';
+  window.switchRubricTab = function(tabName) {
+    window.currentRubricTab = tabName;
+    const tabBtns = document.querySelectorAll('.rubric-tab-btn');
+    tabBtns.forEach(btn => {
+      if (btn.dataset.tab === tabName) {
+        btn.className = "rubric-tab-btn px-4 py-1.5 rounded-xl font-bold text-xs transition bg-blue-600 text-white shadow-sm";
+      } else {
+        btn.className = "rubric-tab-btn px-4 py-1.5 rounded-xl font-bold text-xs transition bg-slate-100 text-slate-700 hover:bg-slate-200";
+      }
+    });
 
-    container.innerHTML = '';
-    LAB_19_DATA.gates.forEach((gate, gIdx) => {
-      const gateCard = document.createElement('div');
-      gateCard.className = "p-3.5 bg-white rounded-xl border-2 border-slate-200 shadow-sm hover-glow-box space-y-2";
-      gateCard.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded font-mono text-xs font-bold ${gIdx === 1 ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-blue-50 text-blue-700 border border-blue-200'}">
-              GATE ${gate.id} · ${gate.pts === 'Overall' ? 'LMS' : gate.pts + ' pts'}
-            </span>
-            <h4 class="text-xs md:text-sm font-extrabold text-slate-900">${gate.title}</h4>
-          </div>
-          <span class="font-mono text-xs font-bold text-slate-500">${gate.notebook}</span>
-        </div>
-        <div class="space-y-1.5 pt-1">
-          ${gate.items ? gate.items.map(item => `
-            <label class="flex items-start gap-2 text-xs text-slate-700 cursor-pointer select-none p-1 rounded hover:bg-slate-50">
-              <input type="checkbox" id="${item.id}" onchange="updateGatesProgress()" class="gate-checkbox mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
-              <span class="font-medium">${item.text}</span>
-            </label>
-          `).join('') : ''}
+    const contentContainer = document.getElementById('rubric-table-content');
+    if (!contentContainer || !LAB_19_DATA) return;
+
+    if (tabName === 'core') {
+      contentContainer.innerHTML = `
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b-2 border-slate-200 text-slate-600">
+                <th class="py-1.5 pl-2">Notebook</th>
+                <th class="py-1.5">Tiêu Chí Đánh Giá Nghiệm Thu</th>
+                <th class="py-1.5 text-right pr-2">Điểm</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${LAB_19_DATA.rubricCore.map(item => `
+                <tr class="hover:bg-blue-50/40 transition">
+                  <td class="py-1.5 pl-2 font-mono text-blue-700 font-bold whitespace-nowrap">${item.nb}</td>
+                  <td class="py-1.5 text-slate-800 font-medium">${item.criterion}</td>
+                  <td class="py-1.5 text-right pr-2 font-mono font-bold text-slate-900">${item.pts} đ</td>
+                </tr>
+              `).join('')}
+              <tr class="bg-blue-50 font-bold border-t-2 border-blue-200">
+                <td class="py-2 pl-2 text-blue-900" colspan="2">Tổng Điểm Khối Core (Bắt buộc đạt tối thiểu 70đ)</td>
+                <td class="py-2 text-right pr-2 font-mono text-blue-900 font-black">100 đ</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       `;
-      container.appendChild(gateCard);
-    });
-    updateGatesProgress();
-  };
-
-  window.updateGatesProgress = function() {
-    const allCheckboxes = document.querySelectorAll('.gate-checkbox');
-    const checkedCheckboxes = document.querySelectorAll('.gate-checkbox:checked');
-    const progressBar = document.getElementById('gates-progress-bar');
-    const progressText = document.getElementById('gates-progress-text');
-
-    if (!allCheckboxes.length) return;
-
-    const total = allCheckboxes.length;
-    const count = checkedCheckboxes.length;
-    const pct = Math.round((count / total) * 100);
-
-    if (progressBar) progressBar.style.width = `${pct}%`;
-    if (progressText) {
-      if (pct === 100) {
-        progressText.innerHTML = `🎉 <strong class="text-emerald-700">100% ĐẠT CHUẨN (${count}/${total} tiêu chí) — Đã sẵn sàng nộp bài!</strong>`;
-      } else {
-        progressText.innerHTML = `Tiến độ kiểm định: <strong>${count}/${total}</strong> tiêu chí (${pct}%)`;
-      }
+    } else if (tabName === 'advanced') {
+      contentContainer.innerHTML = `
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b-2 border-slate-200 text-slate-600">
+                <th class="py-1.5 pl-2">Notebook</th>
+                <th class="py-1.5">Tiêu Chí Đánh Giá Khối Mở Rộng 2026</th>
+                <th class="py-1.5 text-right pr-2">Điểm</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${LAB_19_DATA.rubricAdvanced.map(item => `
+                <tr class="hover:bg-red-50/40 transition">
+                  <td class="py-1.5 pl-2 font-mono text-red-700 font-bold whitespace-nowrap">${item.nb}</td>
+                  <td class="py-1.5 text-slate-800 font-medium">${item.criterion}</td>
+                  <td class="py-1.5 text-right pr-2 font-mono font-bold text-slate-900">${item.pts} đ</td>
+                </tr>
+              `).join('')}
+              <tr class="bg-red-50 font-bold border-t-2 border-red-200">
+                <td class="py-2 pl-2 text-red-900" colspan="2">Tổng Điểm Khối Nâng Cao (NB5 - NB8)</td>
+                <td class="py-2 text-right pr-2 font-mono text-red-900 font-black">50 đ</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else if (tabName === 'bonus') {
+      contentContainer.innerHTML = `
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="border-b-2 border-slate-200 text-slate-600">
+                <th class="py-1.5 pl-2">Tiêu Chí Thử Thách Bonus (Tùy Chọn)</th>
+                <th class="py-1.5 text-right pr-2">Điểm Thưởng</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${LAB_19_DATA.rubricBonus.map(item => `
+                <tr class="hover:bg-emerald-50/40 transition">
+                  <td class="py-1.5 pl-2 text-slate-800 font-medium">${item.criterion}</td>
+                  <td class="py-1.5 text-right pr-2 font-mono font-bold text-emerald-700">+${item.pts} đ</td>
+                </tr>
+              `).join('')}
+              <tr class="bg-emerald-50 font-bold border-t-2 border-emerald-200">
+                <td class="py-2 pl-2 text-emerald-900">Tổng Điểm Thưởng Bonus Challenge (Hybrid Memory Agent)</td>
+                <td class="py-2 text-right pr-2 font-mono text-emerald-900 font-black">+20 đ</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
     }
   };
 
@@ -295,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Run initializations
   showSlide(0);
   window.initQuizzes();
-  window.initGatesChecklist();
+  window.switchRubricTab('core');
   window.updateRepoNamePreview();
   window.updateSubmissionProgress();
   setTimeout(renderLatexMath, 300);

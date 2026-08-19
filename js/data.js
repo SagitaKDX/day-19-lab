@@ -1,5 +1,5 @@
 /**
- * data.js - Metadata, Gates, Rubrics, Checklist, and Anti-Patterns for Day 19 Lab Guide
+ * data.js - Metadata, Gates, Official Rubrics (Core 100 + Advanced 50 + Bonus 20), Checklist, and Anti-Patterns
  * VinUni Codelab - AICB Track 2: Vector Store + Feature Store
  */
 
@@ -40,75 +40,44 @@ const LAB_19_DATA = {
       pts: "30 pts"
     }
   ],
-  phases: [
-    { title: "NB1: Vector Indexing", duration: 20, key: "nb1", desc: "Embed 1000 docs tiếng Việt bằng fastembed (384d), index vào Qdrant collection lab19." },
-    { title: "NB2: Hybrid Search & RRF", duration: 30, key: "nb2", desc: "Kết hợp BM25 + Qdrant theo công thức RRF 1/(60+rank). Đo Precision@10 trên 50 golden queries." },
-    { title: "NB3: FastAPI & P99", duration: 25, key: "nb3", desc: "Triển khai REST API GET /search?q=...&mode=hybrid. Đo P50/P95/P99 latency < 50ms." },
-    { title: "NB4: Feast Feature Store", duration: 35, key: "nb4", desc: "Đăng ký 3 feature views, feast apply, materialize online store, PIT historical join." },
-    { title: "NB5: Filtered Search (Adv)", duration: 20, key: "nb5", desc: "Post-filter vs Pre-filter vs Filtered-ANN. Chứng minh hiện tượng sập recall khi selectivity <= 4%." },
-    { title: "NB6: Agentic Retrieval (Adv)", duration: 25, key: "nb6", desc: "Retrieval-as-a-tool, query planner tách sub-queries, reflection, build_context kết hợp Feast." },
-    { title: "NB7: Semantic Cache (Adv)", duration: 15, key: "nb7", desc: "Sweep ngưỡng tương đồng vs tỷ lệ trả lời sai. Demo và fix rò chéo tenant namespace." },
-    { title: "NB8: Feature Engineering (Adv)", duration: 20, key: "nb8", desc: "Target-encoding leakage gap > 0.30 trên session_id, so sánh PIT vs Latest join, On-demand view." }
+  rubricCore: [
+    { nb: "01_embeddings_index", criterion: "client.count('lab19').count == 1000", pts: 5 },
+    { nb: "01_embeddings_index", criterion: "Top-5 kết quả hiển thị cho keyword query (cell §5 output)", pts: 5 },
+    { nb: "01_embeddings_index", criterion: "Paraphrase query (không có từ 'cloud') trả về top-5 đúng chủ đề cloud", pts: 10 },
+    { nb: "02_hybrid_search_rrf", criterion: "search_hybrid triển khai theo công thức RRF 1/(k + rank), rank 1-based", pts: 10 },
+    { nb: "02_hybrid_search_rrf", criterion: "Bảng Precision@10 trung bình: Hybrid > BM25 Keyword VÀ Hybrid > Semantic Vector", pts: 10 },
+    { nb: "02_hybrid_search_rrf", criterion: "Phân tích slice query: Hybrid thắng mixed, Vector thắng paraphrase, BM25 thắng exact", pts: 5 },
+    { nb: "03_search_api_benchmark", criterion: "FastAPI /search trả về SearchResponse hợp lệ có trường latency_ms", pts: 5 },
+    { nb: "03_search_api_benchmark", criterion: "Bảng độ trễ P50/P95/P99 cho 3 chế độ (đo lường phía server)", pts: 10 },
+    { nb: "03_search_api_benchmark", criterion: "Hybrid P99 server-side < 50ms sau khi warm-up", pts: 10 },
+    { nb: "04_feast_feature_store", criterion: "feast apply thành công — 3 feature views được đăng ký đầy đủ", pts: 5 },
+    { nb: "04_feast_feature_store", criterion: "materialize-incremental thành công đẩy dữ liệu vào Online Store", pts: 5 },
+    { nb: "04_feast_feature_store", criterion: "get_online_features() trả về dict hợp lệ cho user_id=u_001", pts: 5 },
+    { nb: "04_feast_feature_store", criterion: "Đo lường 100-call online lookup P99 (P99 < 10ms = full credit)", pts: 5 },
+    { nb: "04_feast_feature_store", criterion: "Point-in-Time join qua get_historical_features() trả về đúng 3 dòng x N features", pts: 5 },
+    { nb: "Tất cả Notebooks", criterion: "Chạy sạch tái lập: bash setup-lite.sh && make benchmark", pts: 5 }
   ],
-  gates: [
-    {
-      id: 1,
-      title: "GATE 1 — Vector Index Integrity (NB1)",
-      notebook: "01_embeddings_index",
-      pts: 20,
-      items: [
-        { id: "g1_1", text: "client.count('lab19').count == 1000 (Index đủ 1.000 documents)" },
-        { id: "g1_2", text: "Top-5 kết quả cho keyword query hiển thị chính xác" },
-        { id: "g1_3", text: "Top-5 paraphrase query (không chứa từ 'cloud') vẫn trả về đúng cụm điện toán đám mây" }
-      ]
-    },
-    {
-      id: 2,
-      title: "GATE 2 — Hybrid RRF Superiority (NB2)",
-      notebook: "02_hybrid_search_rrf",
-      pts: 25,
-      items: [
-        { id: "g2_1", text: "Thuật toán RRF chuẩn: 1 / (60 + rank), với rank là 1-based (bắt đầu từ 1)" },
-        { id: "g2_2", text: "Bảng Precision@10 trung bình: Hybrid > BM25 Keyword VÀ Hybrid > Semantic Vector" },
-        { id: "g2_3", text: "Slice query phân tích rõ: Hybrid thắng mixed, Vector thắng paraphrase, BM25 thắng exact" }
-      ]
-    },
-    {
-      id: 3,
-      title: "GATE 3 — Low Latency REST API (NB3)",
-      notebook: "03_search_api_benchmark",
-      pts: 25,
-      items: [
-        { id: "g3_1", text: "FastAPI GET /search trả về đúng schema SearchResponse chứa latency_ms" },
-        { id: "g3_2", text: "Bảng latency P50 / P95 / P99 được đo lường chính xác phía server" },
-        { id: "g3_3", text: "Đã warm-up server và đo Hybrid P99 < 50ms" }
-      ]
-    },
-    {
-      id: 4,
-      title: "GATE 4 — Feast Materialization & PIT Consistency (NB4)",
-      notebook: "04_feast_feature_store",
-      pts: 30,
-      items: [
-        { id: "g4_1", text: "feast apply thành công đăng ký cả 3 feature views" },
-        { id: "g4_2", text: "materialize-incremental đẩy dữ liệu vào Online Store" },
-        { id: "g4_3", text: "get_online_features(user_id='u_001') hoạt động với P99 < 10ms" },
-        { id: "g4_4", text: "Point-in-Time historical join trả về đúng 3 dòng x N features (Không dính data leak)" }
-      ]
-    },
-    {
-      id: 5,
-      title: "GATE 5 — Clean Reproducibility & LMS Submission",
-      notebook: "All Notebooks + Submission",
-      pts: "Overall",
-      items: [
-        { id: "g5_1", text: "Chạy thành công từ máy sạch: bash setup-lite.sh && make benchmark" },
-        { id: "g5_2", text: "4 Notebooks Core (.ipynb) giữ nguyên toàn bộ output cells đã thực thi" },
-        { id: "g5_3", text: "Thư mục submission/screenshots/ chứa đầy đủ ảnh chụp từng notebook" },
-        { id: "g5_4", text: "submission/REFLECTION.md điền đầy đủ (<= 200 chữ so sánh 3 modes)" },
-        { id: "g5_5", text: "Tên repo chuẩn Track2_Day19_MSV_HoVaTen, bật chế độ PUBLIC và dán link vào LMS" }
-      ]
-    }
+  rubricAdvanced: [
+    { nb: "05_filtered_search", criterion: "Bảng recall theo độ chọn lọc: Post-filter giảm rõ rệt khi filter chặt, Filtered-ANN giữ 1.00", pts: 5 },
+    { nb: "05_filtered_search", criterion: "Over-fetch ladder cho thấy fetch_k phải ≈ 50% corpus mới cứu được recall", pts: 5 },
+    { nb: "06_agent_retrieval", criterion: "Bảng 3 chiến lược ở cùng ngân sách 16 docs: Agentic > Single-shot cả recall lẫn balance", pts: 5 },
+    { nb: "06_agent_retrieval", criterion: "Giải thích được vì sao agentic (+filter) thấp hơn agentic (no filter)", pts: 4 },
+    { nb: "06_agent_retrieval", criterion: "build_context() chạy được, in ra cả feature (Feast) lẫn doc_ids (Qdrant)", pts: 3 },
+    { nb: "07_semantic_cache", criterion: "Bảng sweep có cả hai cột: tỷ lệ tiết kiệm và tỷ lệ trả lời sai", pts: 5 },
+    { nb: "07_semantic_cache", criterion: "Chọn được ngưỡng có lý cho corpus + giải thích vì sao 0.75 chưa đủ", pts: 4 },
+    { nb: "07_semantic_cache", criterion: "Demo rò chéo tenant: rò rỉ khi namespaced=False, MISS an toàn khi True", pts: 3 },
+    { nb: "08_feature_engineering", criterion: "Bảng leakage: target-naive gap > 0.30 trên session_id, in-fold ≈ 0", pts: 4 },
+    { nb: "08_feature_engineering", criterion: "PIT vs latest join: báo cáo % dòng rò + chênh lệch AUC", pts: 4 },
+    { nb: "08_feature_engineering", criterion: "On-demand feature view: cùng user, hai amount → hai amount_vs_avg khác nhau", pts: 4 },
+    { nb: "Toàn bộ Tests", criterion: "make test và make verify-lite đều xanh (pass 100%) trên máy sạch", pts: 4 }
+  ],
+  rubricBonus: [
+    { criterion: "bonus/ARCHITECTURE.md tồn tại, ≥ 600 từ, có sơ đồ kiến trúc mermaid/ascii", pts: 3 },
+    { criterion: "3 quyết định kiến trúc nêu rõ tradeoff rõ ràng (X vs Y, tại sao chọn X)", pts: 6 },
+    { criterion: "Ít nhất 1 quyết định thể hiện hiểu biết sâu về ngữ cảnh tiếng Việt", pts: 2 },
+    { criterion: "Nêu đích danh phương án thay thế bị bác bỏ (Rejected Alternative) kèm lý do", pts: 2 },
+    { criterion: "bonus/agent.py chạy được (HybridMemoryAgent.remember() + .recall())", pts: 4 },
+    { criterion: "bonus/demo.py kết thúc exit code 0 với 5 câu query in ra kết quả", pts: 3 }
   ],
   antiPatterns: [
     {

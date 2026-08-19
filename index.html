@@ -292,7 +292,6 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Lite Path Card -->
           <div class="glass-card p-5 border-blue-200 bg-blue-50/40 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
@@ -312,7 +311,6 @@
             </div>
           </div>
 
-          <!-- Docker Path Card -->
           <div class="glass-card glass-card-red p-5 border-red-200 bg-red-50/40 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
@@ -888,30 +886,35 @@
       </div>
     </div>
 
-    <!-- ================= SLIDE 14: 5 GATES INTERACTIVE CHECKLIST ================= -->
+    <!-- ================= SLIDE 14: FULL OFFICIAL RUBRIC WITH TABS ================= -->
     <div class="slide-view flex-col justify-center">
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-3.5 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-xs font-mono font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Thang Điểm & Kiểm Định</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">📊 Checklist Đánh Giá 5 Gate (Tích Chọn Để Kiểm Tra)</h2>
+            <span class="text-xs font-mono font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Thang Điểm Chính Thức</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">📊 Rubric Chấm Điểm Lab 19 (100 Core + 50 Nâng Cao + 20 Bonus)</h2>
           </div>
-          <span class="pill-badge bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-xs">GATE 5 · RUBRIC</span>
+          <span class="pill-badge bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-xs">Official Rubric</span>
         </div>
 
-        <!-- Live Progress Bar -->
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
-          <div class="flex items-center justify-between text-xs text-slate-700">
-            <span id="gates-progress-text" class="font-bold">Tiến độ kiểm định: <strong>0/17</strong> tiêu chí (0%)</span>
-            <span class="font-mono text-emerald-700 font-bold">100 pts Core + 50 pts Adv + 20 pts Bonus</span>
+        <!-- Rubric Switcher Tabs -->
+        <div class="flex items-center justify-between gap-2 border-b border-slate-200 pb-2.5">
+          <div class="flex items-center gap-2">
+            <button onclick="switchRubricTab('core')" data-tab="core" class="rubric-tab-btn px-4 py-1.5 rounded-xl font-bold text-xs transition bg-blue-600 text-white shadow-sm">
+              Khối Core (100 Điểm)
+            </button>
+            <button onclick="switchRubricTab('advanced')" data-tab="advanced" class="rubric-tab-btn px-4 py-1.5 rounded-xl font-bold text-xs transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+              Khối Nâng Cao NB5–NB8 (50 Điểm)
+            </button>
+            <button onclick="switchRubricTab('bonus')" data-tab="bonus" class="rubric-tab-btn px-4 py-1.5 rounded-xl font-bold text-xs transition bg-slate-100 text-slate-700 hover:bg-slate-200">
+              Thử Thách Bonus (+20 Điểm)
+            </button>
           </div>
-          <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-            <div id="gates-progress-bar" class="h-full bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full transition-all duration-300" style="width: 0%;"></div>
-          </div>
+          <span class="text-xs font-mono text-slate-500 font-bold hidden sm:inline">Trọng số Track 2: 30%</span>
         </div>
 
-        <!-- Interactive 5 Gates Container -->
-        <div id="gates-interactive-container" class="space-y-2.5">
+        <!-- Dynamic Table Content Area -->
+        <div id="rubric-table-content" class="p-3 bg-white rounded-2xl border-2 border-slate-200 shadow-sm min-h-[300px]">
           <!-- Rendered dynamically by slides.js -->
         </div>
       </div>
