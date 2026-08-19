@@ -1,6 +1,7 @@
 /**
- * data.js - Metadata, Official Rubrics (Core 100 + Advanced 50 + Bonus 20), Checklist, and Anti-Patterns
+ * data.js - Metadata, Exact 1-to-1 Official Rubric (Core 100 pts, Advanced 50 pts, Bonus 20 pts), and Anti-Patterns
  * VinUni Codelab - AICB Track 2: Vector Store + Feature Store
+ * Exact match with rubric.md
  */
 
 const LAB_19_DATA = {
@@ -10,6 +11,8 @@ const LAB_19_DATA = {
   durationMinutes: 180,
   repoNamingPattern: "Track2_Day19_MSV_HoVaTen",
   repoNamingExample: "Track2_Day19_20260012_NguyenVanA",
+  
+  // Exact 1-to-1 match with rubric.md (Core total = 100 pts, Target Pass = 70 pts)
   rubricCore: [
     { id: "c1", nb: "01_embeddings_index", criterion: "client.count('lab19').count == 1000", pts: 5 },
     { id: "c2", nb: "01_embeddings_index", criterion: "Top-5 kết quả hiển thị cho keyword query (cell §5 output)", pts: 5 },
@@ -27,6 +30,8 @@ const LAB_19_DATA = {
     { id: "c14", nb: "04_feast_feature_store", criterion: "Point-in-Time join qua get_historical_features() trả về đúng 3 dòng x N features", pts: 5 },
     { id: "c15", nb: "Tất cả Notebooks", criterion: "Chạy sạch tái lập: bash setup-lite.sh && make benchmark", pts: 5 }
   ],
+  
+  // Exact 1-to-1 match with rubric.md (Advanced total = 50 pts)
   rubricAdvanced: [
     { id: "a1", nb: "05_filtered_search", criterion: "Bảng recall theo độ chọn lọc: Post-filter giảm rõ rệt khi filter chặt, Filtered-ANN giữ 1.00", pts: 5 },
     { id: "a2", nb: "05_filtered_search", criterion: "Over-fetch ladder cho thấy fetch_k phải ≈ 50% corpus mới cứu được recall", pts: 5 },
@@ -41,14 +46,17 @@ const LAB_19_DATA = {
     { id: "a11", nb: "08_feature_engineering", criterion: "On-demand feature view: cùng user, hai amount → hai amount_vs_avg khác nhau", pts: 4 },
     { id: "a12", nb: "Toàn bộ Tests", criterion: "make test và make verify-lite đều xanh (pass 100%) trên máy sạch", pts: 4 }
   ],
+  
+  // Exact 1-to-1 match with rubric.md (Bonus total = 20 pts)
   rubricBonus: [
-    { id: "b1", criterion: "bonus/ARCHITECTURE.md tồn tại, ≥ 600 từ, có sơ đồ kiến trúc mermaid/ascii", pts: 3 },
+    { id: "b1", criterion: "bonus/ARCHITECTURE.md tồn tại, ≥ 600 từ, có sơ đồ kiến trúc", pts: 3 },
     { id: "b2", criterion: "3 quyết định kiến trúc nêu rõ tradeoff rõ ràng (X vs Y, tại sao chọn X)", pts: 6 },
     { id: "b3", criterion: "Ít nhất 1 quyết định thể hiện hiểu biết sâu về ngữ cảnh tiếng Việt", pts: 2 },
     { id: "b4", criterion: "Nêu đích danh phương án thay thế bị bác bỏ (Rejected Alternative) kèm lý do", pts: 2 },
     { id: "b5", criterion: "bonus/agent.py chạy được (HybridMemoryAgent.remember() + .recall())", pts: 4 },
     { id: "b6", criterion: "bonus/demo.py kết thúc exit code 0 với 5 câu query in ra kết quả", pts: 3 }
   ],
+
   antiPatterns: [
     {
       title: "1. Rank 0-based trong công thức RRF",
@@ -91,6 +99,7 @@ const LAB_19_DATA = {
       desc: "Hệ thống LMS của VinUni chấm tự động. Nếu link repo GitHub để Private, grader không thể tải code về chấm và bài sẽ nhận điểm 0."
     }
   ],
+
   quizzes: [
     {
       id: "q1",
