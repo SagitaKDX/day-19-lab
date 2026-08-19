@@ -1,11 +1,11 @@
 /**
  * slides.js - Presentation Controller, Simulator Hooks, KaTeX Auto-Renderer, Interactive Checklists & Quiz Logic
- * Controls 16 Slides, Fullscreen, Keyboard Shortcuts, Simulators, Checklists, Repo Name Generator and Quizzes.
+ * Controls 17 Slides, Fullscreen, Keyboard Shortcuts, Simulators, Checklists, Repo Name Generator and Quizzes.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   let currentSlideIndex = 0;
-  const totalSlides = 16;
+  const totalSlides = 17;
 
   const slideViews = document.querySelectorAll('.slide-view');
   const currentSlideDisplay = document.getElementById('current-slide-num');
@@ -140,10 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(generatedName).then(() => {
           const origText = copyBtn.innerHTML;
           copyBtn.innerHTML = `✔ Đã Copy!`;
-          copyBtn.className = "px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-mono text-xs font-bold transition shadow";
+          copyBtn.className = "px-4 py-2 rounded-xl bg-emerald-600 text-white font-mono text-xs font-bold transition shadow-md";
           setTimeout(() => {
             copyBtn.innerHTML = origText;
-            copyBtn.className = "px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold transition shadow";
+            copyBtn.className = "px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold transition shadow-md";
           }, 2000);
         });
       };
@@ -202,6 +202,35 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         progressText.innerHTML = `Tiến độ kiểm định: <strong>${count}/${total}</strong> tiêu chí (${pct}%)`;
       }
+    }
+  };
+
+  // ================= SUBMISSION PRE-FLIGHT CHECKLIST =================
+  window.updateSubmissionProgress = function() {
+    const checks = document.querySelectorAll('.submission-check');
+    const checked = document.querySelectorAll('.submission-check:checked');
+    const statusBox = document.getElementById('submission-status-box');
+
+    if (!checks.length || !statusBox) return;
+
+    if (checked.length === checks.length) {
+      statusBox.className = "p-3 bg-emerald-50 border-2 border-emerald-300 rounded-xl text-xs text-emerald-900 font-bold flex items-center justify-between";
+      statusBox.innerHTML = `
+        <span class="flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          SẴN SÀNG NỘP BÀI (Đã hoàn thành ${checked.length}/${checks.length} yêu cầu)
+        </span>
+        <span class="text-emerald-700 font-mono">Ready to Submit</span>
+      `;
+    } else {
+      statusBox.className = "p-3 bg-amber-50 border-2 border-amber-200 rounded-xl text-xs text-amber-900 font-bold flex items-center justify-between";
+      statusBox.innerHTML = `
+        <span class="flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          CHƯA ĐỦ ĐIỀU KIỆN (Còn ${checks.length - checked.length} mục chưa tích chọn)
+        </span>
+        <span class="text-amber-700 font-mono">${checked.length}/${checks.length} Checked</span>
+      `;
     }
   };
 
@@ -268,5 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.initQuizzes();
   window.initGatesChecklist();
   window.updateRepoNamePreview();
+  window.updateSubmissionProgress();
   setTimeout(renderLatexMath, 300);
 });

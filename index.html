@@ -126,7 +126,7 @@
 
       <!-- Slide Counter -->
       <div class="whitespace-nowrap font-mono text-slate-700 px-3 py-1.5 bg-white rounded-xl border border-slate-200 font-extrabold shadow-sm text-xs">
-        Slide <span id="current-slide-num" class="text-blue-700 font-black">1</span> / <span id="total-slide-num">16</span>
+        Slide <span id="current-slide-num" class="text-blue-700 font-black">1</span> / <span id="total-slide-num">17</span>
       </div>
 
       <!-- Fullscreen Button -->
@@ -896,71 +896,127 @@
       </div>
     </div>
 
-    <!-- ================= SLIDE 15: QUIZ & LMS SUBMISSION REPO GENERATOR ================= -->
+    <!-- ================= SLIDE 15: DEDICATED CHECKPOINT QUIZ ================= -->
     <div class="slide-view flex-col justify-center">
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Kiểm Tra Nhanh & Nộp Bài</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">🧪 Mini Quiz & Công Cụ Chuẩn Hóa Repo Nộp LMS</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Kiểm Tra Kiến Thức</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">🧪 Mini Checkpoint Quiz (4 Câu Hỏi Cốt Lõi)</h2>
           </div>
-          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">Self Check & Submission</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">Self Assessment</span>
         </div>
+
+        <p class="text-xs text-slate-600">
+          Hãy hoàn thành 4 câu hỏi trắc nghiệm dưới đây để tự kiểm tra mức độ hiểu sâu về các quyết định kỹ thuật cốt lõi trong Lab 19:
+        </p>
 
         <!-- Quiz List Container -->
         <div id="quiz-questions-list" class="space-y-3">
           <!-- Rendered dynamically by slides.js -->
         </div>
+      </div>
+    </div>
 
-        <!-- Submission Checklist & Repo Generator Box -->
-        <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 shadow-sm hover-glow-box">
-          <div class="flex items-center justify-between">
-            <strong class="text-slate-900 text-sm font-bold">📋 Quy Chuẩn Đặt Tên Repo Bắt Buộc:</strong>
-            <span class="px-2 py-0.5 rounded font-mono text-xs font-bold bg-red-50 text-red-700 border border-red-200">Format: Track2_Day19_MSV_HoVaTen</span>
+    <!-- ================= SLIDE 16: DEDICATED REPO & SUBMISSION CHECKLIST ================= -->
+    <div class="slide-view flex-col justify-center">
+      <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Quy Chuẩn & Nộp Bài</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">📋 Cấu Trúc Repository & Checklist Nộp Bài LMS</h2>
           </div>
+          <span class="pill-badge bg-red-100 text-red-800 border border-red-300 font-mono text-xs">LMS Submission</span>
+        </div>
 
-          <!-- Interactive Repo Name Generator -->
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-              <div>
-                <label class="block text-slate-600 font-bold mb-1">Mã Sinh Viên (MSV):</label>
-                <input type="text" id="repo-msv-input" oninput="updateRepoNamePreview()" placeholder="Ví dụ: 20260012" class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono focus:ring-1 focus:ring-blue-500 focus:outline-none">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Left: Repo Name Generator & Folder Tree -->
+          <div class="space-y-3">
+            <!-- Generator Box -->
+            <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 shadow-sm hover-glow-box">
+              <div class="flex items-center justify-between">
+                <strong class="text-slate-900 text-xs md:text-sm font-bold">1. Công Cụ Tạo Tên Repo Bắt Buộc:</strong>
+                <span class="px-2 py-0.5 rounded font-mono text-[11px] font-bold bg-red-50 text-red-700 border border-red-200">Format Chuẩn</span>
               </div>
-              <div>
-                <label class="block text-slate-600 font-bold mb-1">Họ và Tên:</label>
-                <input type="text" id="repo-name-input" oninput="updateRepoNamePreview()" placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-blue-500 focus:outline-none">
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div>
+                  <label class="block text-slate-600 font-bold mb-1">Mã Sinh Viên (MSV):</label>
+                  <input type="text" id="repo-msv-input" oninput="updateRepoNamePreview()" placeholder="Ví dụ: 20260012" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-slate-600 font-bold mb-1">Họ và Tên:</label>
+                  <input type="text" id="repo-name-input" oninput="updateRepoNamePreview()" placeholder="Ví dụ: Nguyễn Văn A" class="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:ring-1 focus:ring-blue-500 focus:outline-none">
+                </div>
+              </div>
+
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-2 p-2.5 bg-blue-50/60 rounded-xl border border-blue-200">
+                <div>
+                  <div class="text-[10px] text-blue-600 font-bold uppercase">Tên Repository Của Bạn:</div>
+                  <span id="repo-name-preview" class="font-mono text-xs md:text-sm font-black text-blue-900">Track2_Day19_MSV_HoVaTen</span>
+                </div>
+                <button id="btn-copy-repo-name" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold transition shadow whitespace-nowrap">
+                  📋 Copy Tên Repo
+                </button>
               </div>
             </div>
 
-            <div class="flex flex-col md:flex-row items-center justify-between gap-2 p-2.5 bg-white rounded-lg border border-blue-200">
-              <div class="flex items-center gap-2">
-                <span class="text-xs text-slate-500 font-bold">Tên Repo Dự Kiến:</span>
-                <span id="repo-name-preview" class="font-mono text-xs md:text-sm font-black text-blue-700">Track2_Day19_MSV_HoVaTen</span>
+            <!-- Folder Structure Tree -->
+            <div class="p-3.5 bg-white rounded-2xl border-2 border-slate-200 space-y-1.5 font-mono text-xs text-slate-800 shadow-sm hover-glow-box">
+              <strong class="text-blue-700 font-sans text-xs uppercase font-bold">Cấu Trúc Thư Mục Chuẩn Trên GitHub:</strong>
+              <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1 text-[11px]">
+                <div class="font-bold text-blue-800">Track2_Day19_MSV_HoVaTen/</div>
+                <div class="pl-3 text-slate-600">├── 📓 01_embeddings_index.ipynb <span class="text-emerald-700">(Đã chạy có output)</span></div>
+                <div class="pl-3 text-slate-600">├── 📓 02_hybrid_search_rrf.ipynb <span class="text-emerald-700">(Đã chạy có output)</span></div>
+                <div class="pl-3 text-slate-600">├── 📓 03_search_api_benchmark.ipynb <span class="text-emerald-700">(Đã chạy có output)</span></div>
+                <div class="pl-3 text-slate-600">├── 📓 04_feast_feature_store.ipynb <span class="text-emerald-700">(Đã chạy có output)</span></div>
+                <div class="pl-3 text-slate-600">├── 📁 submission/screenshots/ <span class="text-blue-700">(Ảnh chụp kết quả)</span></div>
+                <div class="pl-3 text-slate-600">├── 📝 submission/REFLECTION.md <span class="text-red-600 font-bold">(≤ 200 chữ)</span></div>
+                <div class="pl-3 text-slate-400">└── 🎁 bonus/ (Tùy chọn +20 điểm)</div>
               </div>
-              <button id="btn-copy-repo-name" class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold transition shadow whitespace-nowrap">
-                📋 Copy Tên Repo
-              </button>
             </div>
           </div>
 
-          <!-- Checklist items -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-700 font-medium pt-1">
-            <label class="flex items-center gap-2 cursor-pointer p-1 rounded hover:bg-slate-50">
-              <input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
-              <span>✔ 4 Notebooks Core (.ipynb có đủ output cells)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-1 rounded hover:bg-slate-50">
-              <input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
-              <span>✔ Thư mục submission/screenshots/ đầy đủ ảnh</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-1 rounded hover:bg-slate-50">
-              <input type="checkbox" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
-              <span>✔ Điền hoàn chỉnh submission/REFLECTION.md</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer p-1 rounded hover:bg-slate-50">
-              <input type="checkbox" class="rounded border-slate-300 text-red-600 focus:ring-red-500 cursor-pointer">
-              <span>✔ Repo GitHub bật chế độ <strong>PUBLIC</strong> và dán link vào LMS</span>
-            </label>
+          <!-- Right: Pre-Flight Checklist & Submission Status -->
+          <div class="space-y-3">
+            <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 shadow-sm hover-glow-box">
+              <strong class="text-slate-900 text-xs md:text-sm font-bold">2. Checklist Bắt Buộc Trước Khi Nộp:</strong>
+              
+              <div class="space-y-2 text-xs text-slate-700">
+                <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-slate-50 border border-slate-200">
+                  <input type="checkbox" onchange="updateSubmissionProgress()" class="submission-check mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                  <span><strong>4 Notebooks Core (.ipynb):</strong> Đã lưu đầy đủ output cells (không nộp file trắng).</span>
+                </label>
+
+                <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-slate-50 border border-slate-200">
+                  <input type="checkbox" onchange="updateSubmissionProgress()" class="submission-check mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                  <span><strong>Ảnh chụp màn hình:</strong> Đã lưu tại <code class="text-blue-700 font-mono">submission/screenshots/</code> ít nhất 1 ảnh/notebook.</span>
+                </label>
+
+                <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-slate-50 border border-slate-200">
+                  <input type="checkbox" onchange="updateSubmissionProgress()" class="submission-check mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                  <span><strong>Điền Reflection:</strong> Hoàn thành <code class="text-blue-700 font-mono">submission/REFLECTION.md</code> (so sánh 3 mode tìm kiếm).</span>
+                </label>
+
+                <label class="flex items-start gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-red-50/50 border border-red-200">
+                  <input type="checkbox" onchange="updateSubmissionProgress()" class="submission-check mt-0.5 rounded border-red-300 text-red-600 focus:ring-red-500 cursor-pointer">
+                  <span><strong class="text-red-700">PUBLIC GitHub Repo:</strong> Repo bắt buộc để chế độ PUBLIC và dán link vào VinUni LMS. (Private = 0đ).</span>
+                </label>
+              </div>
+
+              <!-- Ready status -->
+              <div id="submission-status-box" class="p-3 bg-amber-50 border-2 border-amber-200 rounded-xl text-xs text-amber-900 font-bold flex items-center justify-between">
+                <span>Vui lòng tích chọn đầy đủ các mục kiểm tra ở trên!</span>
+                <span class="text-amber-700 font-mono">0/4 Checked</span>
+              </div>
+            </div>
+
+            <!-- Notes on submission -->
+            <div class="p-3 bg-blue-50 rounded-xl border border-blue-200 text-xs text-slate-700 space-y-1">
+              <div class="font-bold text-blue-800">📌 Lưu ý nộp bài:</div>
+              <div>• Không cần tạo Pull Request (PR) về repo gốc.</div>
+              <div>• Giữ repo ở chế độ Public cho đến khi có điểm số chính thức.</div>
+            </div>
           </div>
         </div>
       </div>
