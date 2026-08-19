@@ -10,6 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
+  <!-- KaTeX for mathematical LaTeX formula rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
   <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
@@ -26,16 +31,21 @@
           colors: {
             royal: {
               50: '#eff6ff',
+              100: '#dbeafe',
               500: '#3b82f6',
               600: '#2563eb',
               700: '#1d4ed8',
               800: '#1e40af',
               900: '#1e3a8a',
             },
-            cyber: {
-              dark: '#080c16',
-              card: '#0f172a',
-              border: '#1e293b'
+            crimson: {
+              50: '#fef2f2',
+              100: '#fee2e2',
+              500: '#ef4444',
+              600: '#dc2626',
+              700: '#b91c1c',
+              800: '#991b1b',
+              900: '#7f1d1d',
             }
           }
         }
@@ -45,68 +55,55 @@
   
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="h-screen w-screen flex flex-col justify-between p-3 md:p-5 text-slate-100 font-sans antialiased select-none relative">
+<body class="h-screen w-screen flex flex-col justify-between p-3 md:p-5 text-slate-900 font-sans antialiased select-none relative bg-slate-50">
 
   <!-- ================= BOTTOM-RIGHT SLIDE NAVIGATION DOCK ================= -->
   <div class="nav-dock-container">
     <button id="nav-btn-prev" class="nav-dock-btn" title="Slide Trước (←)">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="m15 18-6-6 6-6"/>
       </svg>
     </button>
     <button id="nav-btn-next" class="nav-dock-btn nav-dock-btn-next" title="Slide Tiếp Theo (→ hoặc Space)">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="m9 18 6-6-6-6"/>
       </svg>
     </button>
   </div>
 
-  <!-- ================= TOP HEADER (SLIDE NAVIGATION & TIMER) ================= -->
-  <header class="glass-panel px-4 py-2.5 flex items-center justify-between z-30 mb-2 shrink-0 border-slate-800 shadow-lg">
+  <!-- ================= TOP HEADER (CLEAN: LAB TITLE & COMPACT TIMER) ================= -->
+  <header class="glass-panel px-5 py-2.5 flex items-center justify-between z-30 mb-2.5 shrink-0 border-slate-200 shadow-sm">
     <!-- Left: Lab Title & Badge -->
     <div class="flex items-center gap-3">
-      <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
+      <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-red-600 flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/>
         </svg>
       </div>
       <div>
         <div class="flex items-center gap-1.5 mb-0.5">
-          <span class="text-[11px] font-black uppercase tracking-wider text-blue-400 font-mono bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800 whitespace-nowrap">DAY 19</span>
-          <span class="inline-block w-1 h-1 rounded-full bg-slate-600"></span>
-          <span class="text-xs text-indigo-300 font-bold whitespace-nowrap">Track 2 · VinUni Codelab</span>
+          <span class="text-[11px] font-black uppercase tracking-wider text-red-600 font-mono bg-red-50 px-2 py-0.5 rounded border border-red-200 whitespace-nowrap">DAY 19</span>
+          <span class="inline-block w-1 h-1 rounded-full bg-slate-300"></span>
+          <span class="text-xs text-blue-700 font-bold whitespace-nowrap">Track 2 · VinUni Codelab</span>
         </div>
-        <h1 class="text-sm md:text-base font-extrabold text-slate-100 tracking-tight whitespace-nowrap">
+        <h1 class="text-sm md:text-base font-extrabold text-slate-900 tracking-tight whitespace-nowrap">
           Vector Store + Feature Store Lab
         </h1>
       </div>
     </div>
 
-    <!-- Middle: Quick Jump Navigation Pills -->
-    <div class="hidden lg:flex items-center gap-1.5">
-      <button onclick="jumpToSlide(0)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 transition">Tổng quan</button>
-      <button onclick="jumpToSlide(1)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700/60 transition">Kiến trúc</button>
-      <button onclick="jumpToSlide(3)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-950/70 hover:bg-blue-900/80 text-blue-300 border border-blue-800 transition">G1: Vector</button>
-      <button onclick="jumpToSlide(4)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-950/70 hover:bg-blue-900/80 text-blue-300 border border-blue-800 transition">G2: RRF</button>
-      <button onclick="jumpToSlide(5)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-950/70 hover:bg-blue-900/80 text-blue-300 border border-blue-800 transition">G3: FastAPI</button>
-      <button onclick="jumpToSlide(6)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-purple-950/70 hover:bg-purple-900/80 text-purple-300 border border-purple-800 transition">G4: Feast</button>
-      <button onclick="jumpToSlide(11)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-indigo-950/70 hover:bg-indigo-900/80 text-indigo-300 border border-indigo-800 transition">⚡ Simulator</button>
-      <button onclick="jumpToSlide(14)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-950/70 hover:bg-emerald-900/80 text-emerald-300 border border-emerald-800 transition">5 Gates</button>
-      <button onclick="jumpToSlide(15)" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-amber-950/70 hover:bg-amber-900/80 text-amber-300 border border-amber-800 transition">Quiz</button>
-    </div>
-
     <!-- Right: Compact Lab Timer Widget & Slide Counter -->
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2.5">
       <!-- Sleek Timer Widget -->
-      <div class="flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-1 rounded-xl border border-slate-700/80 shadow-sm">
-        <div class="flex items-center gap-1.5 text-blue-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 animate-pulse shrink-0 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+        <div class="flex items-center gap-1.5 text-red-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 animate-pulse shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
           </svg>
-          <span id="timer-display" class="timer-display text-xs md:text-sm font-extrabold text-blue-400 whitespace-nowrap font-mono">120:00</span>
+          <span id="timer-display" class="timer-display text-sm md:text-base font-extrabold text-red-600 whitespace-nowrap font-mono">120:00</span>
         </div>
 
-        <select id="timer-preset-select" class="bg-slate-800 text-slate-200 text-[11px] font-mono font-bold rounded-lg px-2 py-0.5 border border-slate-700 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+        <select id="timer-preset-select" class="bg-slate-50 text-slate-800 text-xs font-mono font-bold rounded-lg px-2 py-1 border border-slate-200 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
           <option value="120">120p (Sprint)</option>
           <option value="180">180p (Full)</option>
           <option value="20">20p (NB1: Vector)</option>
@@ -119,22 +116,22 @@
           <option value="20">20p (NB8: Feature)</option>
         </select>
 
-        <button id="timer-toggle-btn" class="px-2 py-0.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-mono text-[11px] font-bold transition shadow-sm flex items-center gap-1 whitespace-nowrap">
+        <button id="timer-toggle-btn" class="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs font-bold transition shadow-sm flex items-center gap-1 whitespace-nowrap">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg> Bắt Đầu
         </button>
-        <button id="timer-reset-btn" class="p-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 transition" title="Đặt lại">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        <button id="timer-reset-btn" class="p-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition" title="Đặt lại">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
         </button>
       </div>
 
       <!-- Slide Counter -->
-      <div class="whitespace-nowrap font-mono text-slate-300 px-2.5 py-1 bg-slate-900/90 rounded-xl border border-slate-700/80 font-bold text-xs">
-        <span id="current-slide-num" class="text-blue-400 font-black">1</span> / <span id="total-slide-num">16</span>
+      <div class="whitespace-nowrap font-mono text-slate-700 px-3 py-1.5 bg-white rounded-xl border border-slate-200 font-extrabold shadow-sm text-xs">
+        Slide <span id="current-slide-num" class="text-blue-700 font-black">1</span> / <span id="total-slide-num">16</span>
       </div>
 
       <!-- Fullscreen Button -->
-      <button id="btn-fullscreen" class="p-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-slate-300 transition" title="Toàn Màn Hình (F)">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <button id="btn-fullscreen" class="p-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 transition shadow-sm hover-glow-box" title="Toàn Màn Hình (F)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
         </svg>
       </button>
@@ -149,58 +146,58 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto relative">
         <div class="flex items-center justify-between">
           <div class="flex flex-wrap items-center gap-2">
-            <span class="pill-badge bg-blue-950/80 text-blue-400 border border-blue-800 font-mono text-xs">
+            <span class="pill-badge bg-red-100 text-red-700 border border-red-300 font-mono text-xs">
               ⚡ Track 2 · AICB-P2T2
             </span>
-            <span class="pill-badge bg-purple-950/80 text-purple-400 border border-purple-800 font-mono text-xs">
+            <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">
               💻 Thực Hành Cá Nhân · Vibe Coding
             </span>
-            <span class="pill-badge bg-slate-800 text-slate-300 border border-slate-700 font-mono text-xs">
+            <span class="pill-badge bg-slate-100 text-slate-800 border border-slate-300 font-mono text-xs">
               ⏱️ 120–180 Phút
             </span>
           </div>
-          <span class="font-mono text-xs text-slate-400">Stack: FastEmbed · Qdrant · BM25 · FastAPI · Feast</span>
+          <span class="font-mono text-xs font-bold text-slate-600">Stack: FastEmbed · Qdrant · BM25 · FastAPI · Feast</span>
         </div>
 
         <div class="space-y-1.5">
-          <h2 class="text-3xl md:text-5xl font-black text-slate-100 tracking-tight leading-tight">
-            DAY 19: <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">Vector Store + Feature Store</span>
+          <h2 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            DAY 19: <span class="text-blue-700">Vector Store + Feature Store</span>
           </h2>
-          <p class="text-sm md:text-base text-slate-300 font-normal leading-relaxed">
+          <p class="text-sm md:text-base text-slate-700 font-medium leading-relaxed">
             Xây dựng pipeline tìm kiếm lai <strong>Hybrid Search (Sparse BM25 + Dense Qdrant Vector)</strong> kết hợp thuật toán <strong>RRF Fusion</strong>, đo lường độ trễ $P_{99} < 50\text{ms}$ qua FastAPI và tích hợp <strong>Feast Feature Store</strong> để phục vụ mô hình học máy mà không bị Data Leakage.
           </p>
         </div>
 
         <!-- 4 Core Outputs Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <div class="glass-card p-4 border-blue-900/60 bg-blue-950/30">
-            <span class="text-[10px] font-mono font-bold text-blue-400 uppercase bg-blue-950 px-2 py-0.5 rounded border border-blue-800">NB1 · 20 pts</span>
-            <h4 class="font-bold text-slate-100 text-sm mt-1.5">1000 Docs Indexing</h4>
-            <p class="text-xs text-slate-400 mt-1">Index 1000 docs tiếng Việt vào Qdrant in-memory với fastembed (384d).</p>
+          <div class="glass-card p-4 border-blue-200 bg-blue-50/50">
+            <span class="text-[11px] font-mono font-black text-blue-700 uppercase bg-blue-100 px-2 py-0.5 rounded border border-blue-200">NB1 · 20 pts</span>
+            <h4 class="font-extrabold text-slate-900 text-sm mt-1.5">1000 Docs Indexing</h4>
+            <p class="text-xs text-slate-600 mt-1 font-medium">Index 1000 docs tiếng Việt vào Qdrant in-memory với fastembed (384d).</p>
           </div>
 
-          <div class="glass-card p-4 border-indigo-900/60 bg-indigo-950/30">
-            <span class="text-[10px] font-mono font-bold text-indigo-400 uppercase bg-indigo-950 px-2 py-0.5 rounded border border-indigo-800">NB2 · 25 pts</span>
-            <h4 class="font-bold text-slate-100 text-sm mt-1.5">Hybrid Search & RRF</h4>
-            <p class="text-xs text-slate-400 mt-1">RRF $1/(60+\text{rank})$ 1-based. Bảng Precision@10: Hybrid vượt Keyword & Semantic.</p>
+          <div class="glass-card glass-card-red p-4 border-red-200 bg-red-50/50">
+            <span class="text-[11px] font-mono font-black text-red-700 uppercase bg-red-100 px-2 py-0.5 rounded border border-red-200">NB2 · 25 pts</span>
+            <h4 class="font-extrabold text-slate-900 text-sm mt-1.5">Hybrid Search & RRF</h4>
+            <p class="text-xs text-slate-600 mt-1 font-medium">RRF $\frac{1}{60+\text{rank}}$ 1-based. Bảng $\text{Precision}@10$: Hybrid vượt trội.</p>
           </div>
 
-          <div class="glass-card p-4 border-purple-900/60 bg-purple-950/30">
-            <span class="text-[10px] font-mono font-bold text-purple-400 uppercase bg-purple-950 px-2 py-0.5 rounded border border-purple-800">NB3 · 25 pts</span>
-            <h4 class="font-bold text-slate-100 text-sm mt-1.5">FastAPI & P99 Benchmark</h4>
-            <p class="text-xs text-slate-400 mt-1">REST API <code class="text-purple-300">/search</code> trả về latency_ms. Hybrid $P_{99} < 50\text{ms}$.</p>
+          <div class="glass-card p-4 border-blue-200 bg-blue-50/50">
+            <span class="text-[11px] font-mono font-black text-blue-700 uppercase bg-blue-100 px-2 py-0.5 rounded border border-blue-200">NB3 · 25 pts</span>
+            <h4 class="font-extrabold text-slate-900 text-sm mt-1.5">FastAPI & P99 Benchmark</h4>
+            <p class="text-xs text-slate-600 mt-1 font-medium">REST API <code class="text-blue-700 font-mono font-bold">/search</code> trả về latency_ms. Hybrid $P_{99} < 50\text{ms}$.</p>
           </div>
 
-          <div class="glass-card p-4 border-emerald-900/60 bg-emerald-950/30">
-            <span class="text-[10px] font-mono font-bold text-emerald-400 uppercase bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">NB4 · 30 pts</span>
-            <h4 class="font-bold text-slate-100 text-sm mt-1.5">Feast Feature Store</h4>
-            <p class="text-xs text-slate-400 mt-1">3 Feature views, Materialize, Online lookup $P_{99} < 10\text{ms}$ & Point-in-Time Join.</p>
+          <div class="glass-card glass-card-emerald p-4 border-emerald-200 bg-emerald-50/50">
+            <span class="text-[11px] font-mono font-black text-emerald-700 uppercase bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">NB4 · 30 pts</span>
+            <h4 class="font-extrabold text-slate-900 text-sm mt-1.5">Feast Feature Store</h4>
+            <p class="text-xs text-slate-600 mt-1 font-medium">3 Feature views, Materialize, Online lookup $P_{99} < 10\text{ms}$ & Point-in-Time Join.</p>
           </div>
         </div>
 
-        <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between text-xs text-slate-300">
-          <span>💡 <strong class="text-blue-400">Trọng tâm đánh giá:</strong> Quyết định kỹ thuật đúng đắn (1-based rank, No data leakage, Benchmarking sau warm-up) chứ không chỉ chạy lệnh copy-paste!</span>
-          <span class="font-mono text-blue-400 font-bold">Dùng phím [→] hoặc [Space] để tiếp tục</span>
+        <div class="p-3.5 rounded-xl bg-white border-2 border-slate-200 flex items-center justify-between text-xs text-slate-700 shadow-sm hover-glow-box">
+          <span>💡 <strong class="text-red-600">Trọng tâm đánh giá:</strong> Quyết định kỹ thuật đúng đắn (1-based rank, No data leakage, Benchmarking sau warm-up) chứ không chỉ chạy lệnh copy-paste!</span>
+          <span class="font-mono text-blue-700 font-extrabold">Dùng phím [→] hoặc [Space] để tiếp tục</span>
         </div>
       </div>
     </div>
@@ -210,54 +207,54 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800">Bản Đồ Kiến Trúc</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">Luồng Dữ Liệu: Hybrid Search + Feast Feature Store</h2>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Bản Đồ Kiến Trúc</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">Luồng Dữ Liệu: Hybrid Search + Feast Feature Store</h2>
           </div>
-          <span class="pill-badge bg-indigo-950 text-indigo-300 border border-indigo-800 font-mono text-xs">End-to-End Pipeline</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">End-to-End Pipeline</span>
         </div>
 
         <!-- Architecture Flow Diagram -->
-        <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3 font-mono text-xs shadow-inner">
+        <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 font-mono text-xs shadow-sm">
           <div class="grid grid-cols-1 md:grid-cols-5 gap-2.5 items-center text-center">
             <!-- Step 1 -->
-            <div class="p-3 bg-slate-800/80 rounded-xl border border-slate-700">
-              <div class="text-[10px] text-slate-400 font-bold">NGƯỜI DÙNG</div>
-              <strong class="text-blue-400 text-xs">Search Query</strong>
-              <div class="text-[10px] text-slate-400 mt-1">"máy chủ đám mây"</div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-slate-800 hover-glow-box">
+              <div class="text-[10px] text-slate-500 font-bold">NGƯỜI DÙNG</div>
+              <strong class="text-blue-700 text-xs">Search Query</strong>
+              <div class="text-[10px] text-slate-600 mt-1">"máy chủ đám mây"</div>
             </div>
-            <div class="text-blue-400 font-bold text-base">➔</div>
+            <div class="text-blue-600 font-extrabold text-base">➔</div>
             <!-- Step 2 -->
-            <div class="p-3 bg-blue-950/60 rounded-xl border border-blue-800">
-              <div class="text-[10px] text-blue-400 font-bold">DUAL RETRIEVAL</div>
-              <strong class="text-slate-100 text-xs">BM25 + FastEmbed</strong>
-              <div class="text-[10px] text-slate-400 mt-1">Sparse (Keyword) + Dense (Qdrant)</div>
+            <div class="p-3 bg-blue-50 rounded-xl border border-blue-200 text-slate-800 hover-glow-box">
+              <div class="text-[10px] text-blue-700 font-bold">DUAL RETRIEVAL</div>
+              <strong class="text-blue-900 text-xs">BM25 + FastEmbed</strong>
+              <div class="text-[10px] text-slate-600 mt-1">Sparse (Keyword) + Dense (Qdrant)</div>
             </div>
-            <div class="text-blue-400 font-bold text-base">➔</div>
+            <div class="text-blue-600 font-extrabold text-base">➔</div>
             <!-- Step 3 -->
-            <div class="p-3 bg-indigo-950/60 rounded-xl border border-indigo-800">
-              <div class="text-[10px] text-indigo-400 font-bold">FUSION ALGORITHM</div>
-              <strong class="text-indigo-300 text-xs">RRF Fusion (k=60)</strong>
-              <div class="text-[10px] text-slate-400 mt-1">Score = ∑ 1 / (60 + rank)</div>
+            <div class="p-3 bg-red-50 rounded-xl border border-red-200 text-slate-800 hover-glow-box">
+              <div class="text-[10px] text-red-700 font-bold">FUSION ALGORITHM</div>
+              <strong class="text-red-900 text-xs">RRF Fusion ($k=60$)</strong>
+              <div class="text-[10px] text-slate-600 mt-1">$\text{Score} = \sum \frac{1}{60 + \text{rank}}$</div>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-5 gap-2.5 items-center text-center pt-2.5 border-t border-slate-800">
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-2.5 items-center text-center pt-2.5 border-t-2 border-slate-100">
             <!-- Step 4 -->
-            <div class="p-3 bg-purple-950/60 rounded-xl border border-purple-800">
-              <div class="text-[10px] text-purple-400 font-bold">FASTAPI ENDPOINT</div>
-              <strong class="text-purple-300 text-xs">GET /search</strong>
-              <div class="text-[10px] text-slate-400 mt-1">P99 Server Latency &lt; 50ms</div>
+            <div class="p-3 bg-blue-50 rounded-xl border border-blue-200 text-slate-800 hover-glow-box">
+              <div class="text-[10px] text-blue-700 font-bold">FASTAPI ENDPOINT</div>
+              <strong class="text-blue-900 text-xs">GET /search</strong>
+              <div class="text-[10px] text-slate-600 mt-1">$P_{99} < 50\text{ms}$</div>
             </div>
-            <div class="text-purple-400 font-bold text-base">➔</div>
+            <div class="text-blue-600 font-extrabold text-base">➔</div>
             <!-- Step 5 -->
-            <div class="p-3 bg-emerald-950/60 rounded-xl border border-emerald-800">
-              <div class="text-[10px] text-emerald-400 font-bold">FEAST FEATURE STORE</div>
-              <strong class="text-emerald-300 text-xs">Online & PIT Join</strong>
-              <div class="text-[10px] text-slate-400 mt-1">User Profile + Item Features</div>
+            <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-slate-800 hover-glow-box">
+              <div class="text-[10px] text-emerald-700 font-bold">FEAST FEATURE STORE</div>
+              <strong class="text-emerald-900 text-xs">Online & PIT Join</strong>
+              <div class="text-[10px] text-slate-600 mt-1">User Profile + Item Features</div>
             </div>
-            <div class="text-purple-400 font-bold text-base">➔</div>
+            <div class="text-blue-600 font-extrabold text-base">➔</div>
             <!-- Step 6 -->
-            <div class="p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl text-white shadow-md">
+            <div class="p-3 bg-gradient-to-r from-blue-700 to-red-600 rounded-xl text-white shadow-md hover-glow-box">
               <div class="text-[10px] text-blue-100 font-bold">HOÀN TẤT</div>
               <strong class="text-white text-xs">RAG / Agent Context</strong>
               <div class="text-[10px] text-blue-100 mt-1">Đầy đủ Vector + Features</div>
@@ -265,12 +262,12 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-300">
-          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
-            <strong class="text-blue-400 font-bold">1. Vector Store (Episodic Memory):</strong> Lưu trữ và tìm kiếm tương đồng ngữ nghĩa trên các tài liệu phi cấu trúc (1000 văn bản).
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-700">
+          <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+            <strong class="text-blue-700 font-bold">1. Vector Store (Episodic Memory):</strong> Lưu trữ và tìm kiếm tương đồng ngữ nghĩa trên các tài liệu phi cấu trúc (1000 văn bản).
           </div>
-          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
-            <strong class="text-purple-400 font-bold">2. Feature Store (Stable Entity Profile):</strong> Lưu trữ đặc trưng có cấu trúc của User / Item, đồng bộ nhất quán giữa huấn luyện (Offline) và phục vụ (Online).
+          <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+            <strong class="text-red-600 font-bold">2. Feature Store (Stable Entity Profile):</strong> Lưu trữ đặc trưng có cấu trúc của User / Item, đồng bộ nhất quán giữa huấn luyện (Offline) và phục vụ (Online).
           </div>
         </div>
       </div>
@@ -281,56 +278,56 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-indigo-400 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">Lựa Chọn Môi Trường</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">Hai Đường Chạy: Lite Mode vs Docker Full Stack</h2>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Lựa Chọn Môi Trường</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">Hai Đường Chạy: Lite Mode vs Docker Full Stack</h2>
           </div>
-          <span class="pill-badge bg-slate-800 text-slate-300 border border-slate-700 font-mono text-xs">Setup Strategy</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">Setup Strategy</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Lite Path Card -->
-          <div class="glass-card p-5 border-blue-800/80 bg-blue-950/20 flex flex-col justify-between">
+          <div class="glass-card p-5 border-blue-200 bg-blue-50/40 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="pill-badge bg-blue-900/80 text-blue-300 border border-blue-700 text-xs">Lite Path (Mặc Định - Khuyên Dùng)</span>
-                <span class="font-mono text-xs text-emerald-400 font-bold">RAM ~700 MB</span>
+                <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-200 text-xs">Lite Path (Mặc Định - Khuyên Dùng)</span>
+                <span class="font-mono text-xs text-emerald-700 font-bold">RAM ~700 MB</span>
               </div>
-              <h3 class="text-base font-bold text-slate-100 mt-2">Cài Đặt Siêu Nhanh (~60 Giây)</h3>
-              <ul class="text-xs text-slate-300 space-y-1.5 mt-2">
-                <li>• <strong>Embedding:</strong> <code class="text-blue-300 font-mono">fastembed</code> (bge-small-en, 384d, ONNX CPU).</li>
+              <h3 class="text-base font-extrabold text-slate-900 mt-2">Cài Đặt Siêu Nhanh (~60 Giây)</h3>
+              <ul class="text-xs text-slate-700 space-y-1.5 mt-2 font-medium">
+                <li>• <strong>Embedding:</strong> <code class="text-blue-700 font-mono font-bold">fastembed</code> (bge-small-en, 384d, ONNX CPU).</li>
                 <li>• <strong>Vector DB:</strong> Qdrant In-Memory (trong cùng tiến trình Python).</li>
                 <li>• <strong>Feature Store:</strong> Feast SQLite Registry & Online Store.</li>
                 <li>• <strong>Phù hợp:</strong> Mọi laptop học viên, không cần Docker, tập trung vào bản chất thuật toán.</li>
               </ul>
             </div>
-            <div class="mt-4 p-2.5 bg-slate-950 rounded-xl font-mono text-xs text-blue-300 border border-slate-800">
+            <div class="mt-4 p-2.5 bg-white rounded-xl font-mono text-xs text-blue-700 border border-slate-200 shadow-inner font-bold">
               bash setup-lite.sh
             </div>
           </div>
 
           <!-- Docker Path Card -->
-          <div class="glass-card p-5 border-purple-800/80 bg-purple-950/20 flex flex-col justify-between">
+          <div class="glass-card glass-card-red p-5 border-red-200 bg-red-50/40 flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between">
-                <span class="pill-badge bg-purple-900/80 text-purple-300 border border-purple-700 text-xs">Docker Path (Production Grade)</span>
-                <span class="font-mono text-xs text-purple-400 font-bold">RAM ~6–8 GB</span>
+                <span class="pill-badge bg-red-100 text-red-800 border border-red-200 text-xs">Docker Path (Production Grade)</span>
+                <span class="font-mono text-xs text-red-700 font-bold">RAM ~6–8 GB</span>
               </div>
-              <h3 class="text-base font-bold text-slate-100 mt-2">Đầy Đủ Server Microservices</h3>
-              <ul class="text-xs text-slate-300 space-y-1.5 mt-2">
-                <li>• <strong>Embedding:</strong> <code class="text-purple-300 font-mono">bge-m3</code> (1024d, tối ưu tiếng Việt đa ngữ).</li>
+              <h3 class="text-base font-extrabold text-slate-900 mt-2">Đầy Đủ Server Microservices</h3>
+              <ul class="text-xs text-slate-700 space-y-1.5 mt-2 font-medium">
+                <li>• <strong>Embedding:</strong> <code class="text-red-700 font-mono font-bold">bge-m3</code> (1024d, tối ưu tiếng Việt đa ngữ).</li>
                 <li>• <strong>Vector DB:</strong> Qdrant Server độc lập (:6333).</li>
                 <li>• <strong>Feature Store:</strong> Redis (:6379) + PostgreSQL (:5432).</li>
-                <li>• <strong>Hỗ trợ:</strong> Docker Compose, Apple Container (<code class="text-purple-300 font-mono">container-up.sh</code>), Podman.</li>
+                <li>• <strong>Hỗ trợ:</strong> Docker Compose, Apple Container (<code class="text-red-700 font-mono font-bold">container-up.sh</code>), Podman.</li>
               </ul>
             </div>
-            <div class="mt-4 p-2.5 bg-slate-950 rounded-xl font-mono text-xs text-purple-300 border border-slate-800">
+            <div class="mt-4 p-2.5 bg-white rounded-xl font-mono text-xs text-red-700 border border-slate-200 shadow-inner font-bold">
               bash setup-docker.sh
             </div>
           </div>
         </div>
 
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 flex items-center gap-2 text-xs text-slate-300">
-          <span class="text-blue-400 font-bold">💡 Lưu ý quan trọng:</span> Cả 2 paths dùng chung API và code notebook. Bạn có thể chuyển đổi bất cứ lúc nào qua biến <code class="text-blue-300 font-mono">QDRANT_MODE</code> và <code class="text-blue-300 font-mono">EMBEDDING_BACKEND</code> trong file <code class="text-blue-300 font-mono">.env</code>.
+        <div class="p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm flex items-center gap-2 text-xs text-slate-700 hover-glow-box">
+          <span class="text-blue-700 font-bold">💡 Lưu ý quan trọng:</span> Cả 2 paths dùng chung API và code notebook. Bạn có thể chuyển đổi bất cứ lúc nào qua biến <code class="text-blue-700 font-mono font-bold">QDRANT_MODE</code> và <code class="text-blue-700 font-mono font-bold">EMBEDDING_BACKEND</code> trong file <code class="text-blue-700 font-mono font-bold">.env</code>.
         </div>
       </div>
     </div>
@@ -340,39 +337,39 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800">Chặng 1 (20 phút)</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB1: Embeddings & Qdrant Vector Indexing</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Chặng 1 (20 phút)</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB1: Embeddings & Qdrant Vector Indexing</h2>
           </div>
-          <span class="pill-badge bg-blue-950 text-blue-400 border border-blue-800 font-mono text-xs">GATE 1 · 20 PTS</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">GATE 1 · 20 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-2.5 text-xs text-slate-300">
-            <h4 class="font-bold text-slate-100 text-sm">Các bước thực hiện chính:</h4>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 space-y-1">
-              <div class="text-blue-400 font-bold">1. Load Vietnamese Corpus:</div>
-              <div>Nạp 1.000 documents thuộc 10 chủ đề công nghệ từ <code class="text-blue-300 font-mono">data/corpus_vn.jsonl</code>.</div>
+          <div class="space-y-2.5 text-xs text-slate-700">
+            <h4 class="font-bold text-slate-900 text-sm">Các bước thực hiện chính:</h4>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-1 shadow-sm hover-glow-box">
+              <div class="text-blue-700 font-bold">1. Load Vietnamese Corpus:</div>
+              <div>Nạp 1.000 documents thuộc 10 chủ đề công nghệ từ <code class="text-blue-700 font-mono font-bold">data/corpus_vn.jsonl</code>.</div>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 space-y-1">
-              <div class="text-blue-400 font-bold">2. Tạo Embeddings với FastEmbed:</div>
-              <div>Chuyển đổi text thành vector 384 chiều bằng model <code class="text-blue-300 font-mono">BAAI/bge-small-en-v1.5</code>.</div>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-1 shadow-sm hover-glow-box">
+              <div class="text-blue-700 font-bold">2. Tạo Embeddings với FastEmbed:</div>
+              <div>Chuyển đổi text thành vector 384 chiều bằng model <code class="text-blue-700 font-mono font-bold">BAAI/bge-small-en-v1.5</code>.</div>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 space-y-1">
-              <div class="text-blue-400 font-bold">3. Index vào Qdrant In-Memory:</div>
-              <div>Tạo collection <code class="text-blue-300 font-mono">lab19</code> với Cosine distance và upsert 1.000 vectors kèm payload metadata.</div>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 space-y-1 shadow-sm hover-glow-box">
+              <div class="text-blue-700 font-bold">3. Index vào Qdrant In-Memory:</div>
+              <div>Tạo collection <code class="text-blue-700 font-mono font-bold">lab19</code> với Cosine distance và upsert 1.000 vectors kèm payload metadata.</div>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 font-mono text-xs">
-            <div class="text-slate-400">// Tiêu chuẩn nghiệm thu GATE 1:</div>
-            <div class="p-2.5 bg-blue-950/40 rounded-xl border border-blue-800 text-blue-300">
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-3 font-mono text-xs shadow-sm">
+            <div class="text-slate-500 font-bold">// Tiêu chuẩn nghiệm thu GATE 1:</div>
+            <div class="p-2.5 bg-blue-50 rounded-xl border border-blue-200 text-blue-800 font-bold hover-glow-box">
               ✔ client.count("lab19").count == 1000
             </div>
-            <div class="p-2.5 bg-indigo-950/40 rounded-xl border border-indigo-800 text-indigo-300">
+            <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-800 hover-glow-box">
               ✔ Keyword Query: Top 5 kết quả hiển thị chính xác.
             </div>
-            <div class="p-2.5 bg-purple-950/40 rounded-xl border border-purple-800 text-purple-300">
-              ✔ Paraphrase Query (câu hỏi diễn đạt lại không chứa từ khoá "cloud"): Top 5 trả về đúng chủ đề điện toán đám mây.
+            <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-800 font-bold hover-glow-box">
+              ✔ Paraphrase Query: Top 5 trả về đúng chủ đề điện toán đám mây dù không chứa từ khoá "cloud".
             </div>
           </div>
         </div>
@@ -384,46 +381,46 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-indigo-400 bg-indigo-950/80 px-2 py-0.5 rounded border border-indigo-800">Chặng 2 (30 phút)</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB2: Hybrid Search & Reciprocal Rank Fusion (RRF)</h2>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Chặng 2 (30 phút)</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB2: Hybrid Search & Reciprocal Rank Fusion (RRF)</h2>
           </div>
-          <span class="pill-badge bg-indigo-950 text-indigo-400 border border-indigo-800 font-mono text-xs">GATE 2 · 25 PTS</span>
+          <span class="pill-badge bg-red-100 text-red-800 border border-red-300 font-mono text-xs">GATE 2 · 25 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-3 text-xs text-slate-300">
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-indigo-300 font-bold text-sm">Công thức RRF Chuẩn:</strong>
-              <div class="mt-1.5 p-2 bg-slate-950 rounded-lg font-mono text-indigo-300 text-center text-xs">
-                Score(d) = ∑ (1 / (k + rank_r(d))) &nbsp; (k = 60)
+          <div class="space-y-3 text-xs text-slate-700">
+            <div class="p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-red-700 font-bold text-sm">Công thức RRF Chuẩn:</strong>
+              <div class="mt-1.5 p-2 bg-red-50 rounded-lg font-mono text-red-700 text-center text-sm font-bold border border-red-200">
+                $$\text{Score}(d) = \sum_{r \in \{\text{bm25}, \text{vector}\}} \frac{1}{k + \text{rank}_r(d)} \quad (k = 60)$$
               </div>
-              <p class="mt-2 text-slate-400">
-                Lưu ý: <strong>rank là 1-based</strong> (1, 2, 3...). Document đứng đầu có rank=1, mẫu số là 61.
+              <p class="mt-2 text-slate-600 font-medium">
+                Lưu ý: <strong>rank là 1-based</strong> ($1, 2, 3, \dots$). Document đứng đầu có $\text{rank}=1$, mẫu số là $60+1=61$.
               </p>
             </div>
 
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-blue-400 font-bold">Đánh giá trên 50 Golden Queries:</strong>
-              <p class="mt-1 text-slate-400">Đo Precision@10 trên 3 lát cắt query: <code class="text-blue-300">exact</code>, <code class="text-blue-300">paraphrase</code>, <code class="text-blue-300">mixed</code>.</p>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-blue-700 font-bold">Đánh giá trên 50 Golden Queries:</strong>
+              <p class="mt-1 text-slate-600">Đo $\text{Precision}@10$ trên 3 lát cắt query: <code class="text-blue-700 font-mono font-bold">exact</code>, <code class="text-blue-700 font-mono font-bold">paraphrase</code>, <code class="text-blue-700 font-mono font-bold">mixed</code>.</p>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 font-mono text-xs">
-            <div class="text-slate-400">// Kết quả kỳ vọng (Gate 2 Pass):</div>
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-3 font-mono text-xs shadow-sm">
+            <div class="text-slate-500 font-bold">// Kết quả kỳ vọng (Gate 2 Pass):</div>
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="border-b border-slate-800 text-slate-400">
+                <tr class="border-b-2 border-slate-200 text-slate-600">
                   <th class="pb-1.5">Query Type</th>
                   <th class="pb-1.5">BM25</th>
                   <th class="pb-1.5">Vector</th>
-                  <th class="pb-1.5 text-emerald-400">Hybrid (RRF)</th>
+                  <th class="pb-1.5 text-blue-700 font-bold">Hybrid (RRF)</th>
                 </tr>
               </thead>
-              <tbody class="text-slate-300 space-y-1">
+              <tbody class="text-slate-700 space-y-1">
                 <tr><td class="py-1">Exact</td><td>Thắng</td><td>Trung bình</td><td>Rất tốt</td></tr>
                 <tr><td class="py-1">Paraphrase</td><td>Kém</td><td>Thắng</td><td>Rất tốt</td></tr>
-                <tr><td class="py-1">Mixed</td><td>Khá</td><td>Khá</td><td class="text-emerald-400 font-bold">Thắng Tuyệt Đối</td></tr>
-                <tr class="border-t border-slate-800 font-bold"><td class="pt-1.5 text-slate-100">Overall</td><td>0.68</td><td>0.74</td><td class="pt-1.5 text-emerald-400">0.86 (Cao Nhất)</td></tr>
+                <tr><td class="py-1">Mixed</td><td>Khá</td><td>Khá</td><td class="text-blue-700 font-black">Thắng Tuyệt Đối</td></tr>
+                <tr class="border-t-2 border-slate-200 font-bold"><td class="pt-1.5 text-slate-900">Overall</td><td>0.68</td><td>0.74</td><td class="pt-1.5 text-emerald-700 font-black">0.86 (Cao Nhất)</td></tr>
               </tbody>
             </table>
           </div>
@@ -436,42 +433,42 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-purple-400 bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800">Chặng 3 (25 phút)</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB3: REST Search API & Latency Benchmark</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Chặng 3 (25 phút)</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB3: REST Search API & Latency Benchmark</h2>
           </div>
-          <span class="pill-badge bg-purple-950 text-purple-400 border border-purple-800 font-mono text-xs">GATE 3 · 25 PTS</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">GATE 3 · 25 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-2.5 text-xs text-slate-300">
-            <h4 class="font-bold text-slate-100 text-sm">Triển khai FastAPI & Benchmarking:</h4>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <span class="text-purple-400 font-bold">1. Endpoint:</span> <code class="text-purple-300 font-mono">GET /search?q=...&mode=hybrid&top_k=10</code>
-              <p class="mt-1 text-slate-400">Schema trả về có trường <code class="text-purple-300 font-mono">latency_ms</code> đo lường chính xác từ phía server.</p>
+          <div class="space-y-2.5 text-xs text-slate-700">
+            <h4 class="font-bold text-slate-900 text-sm">Triển khai FastAPI & Benchmarking:</h4>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <span class="text-blue-700 font-bold">1. Endpoint:</span> <code class="text-blue-700 font-mono font-bold">GET /search?q=...&mode=hybrid&top_k=10</code>
+              <p class="mt-1 text-slate-600">Schema trả về có trường <code class="text-blue-700 font-mono font-bold">latency_ms</code> đo lường chính xác từ phía server.</p>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <span class="text-purple-400 font-bold">2. Bẫy Cold-start & Warm-up:</span>
-              <p class="mt-1 text-slate-400">Phải bắn ít nhất 5-10 request khởi động để nạp mô hình vào RAM trước khi ghi nhận thống kê.</p>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <span class="text-red-600 font-bold">2. Bẫy Cold-start & Warm-up:</span>
+              <p class="mt-1 text-slate-600">Phải bắn ít nhất 5-10 request khởi động để nạp mô hình vào RAM trước khi ghi nhận thống kê.</p>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 font-mono text-xs">
-            <div class="text-slate-400">// Bảng Latency Mục Tiêu:</div>
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-3 font-mono text-xs shadow-sm">
+            <div class="text-slate-500 font-bold">// Bảng Latency Mục Tiêu:</div>
             <div class="space-y-2">
-              <div class="flex justify-between p-2 bg-slate-900 rounded-lg">
-                <span class="text-slate-400">P50 (Median):</span>
-                <span class="text-emerald-400 font-bold">~ 12 - 18 ms</span>
+              <div class="flex justify-between p-2 bg-white rounded-lg border border-slate-200 hover-glow-box">
+                <span class="text-slate-600">$P_{50}$ (Median):</span>
+                <span class="text-emerald-700 font-bold">~ 12 - 18 ms</span>
               </div>
-              <div class="flex justify-between p-2 bg-slate-900 rounded-lg">
-                <span class="text-slate-400">P95:</span>
-                <span class="text-blue-400 font-bold">~ 25 - 35 ms</span>
+              <div class="flex justify-between p-2 bg-white rounded-lg border border-slate-200 hover-glow-box">
+                <span class="text-slate-600">$P_{95}$:</span>
+                <span class="text-blue-700 font-bold">~ 25 - 35 ms</span>
               </div>
-              <div class="flex justify-between p-2 bg-purple-950/60 rounded-lg border border-purple-800">
-                <span class="text-purple-300 font-bold">P99 Target:</span>
-                <span class="text-emerald-400 font-bold">&lt; 50 ms (Bắt buộc)</span>
+              <div class="flex justify-between p-2 bg-blue-50 rounded-lg border border-blue-200 hover-glow-box">
+                <span class="text-blue-800 font-bold">$P_{99}$ Target:</span>
+                <span class="text-emerald-700 font-black">&lt; 50 ms (Bắt buộc)</span>
               </div>
             </div>
-            <div class="text-[11px] text-slate-500">Chạy kiểm thử: <code class="text-purple-300">make benchmark</code></div>
+            <div class="text-[11px] text-slate-500">Chạy kiểm thử: <code class="text-blue-700 font-bold">make benchmark</code></div>
           </div>
         </div>
       </div>
@@ -482,42 +479,42 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">Chặng 4 (35 phút)</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB4: Feast Feature Store & Point-in-Time Join</h2>
+            <span class="text-xs font-mono font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Chặng 4 (35 phút)</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB4: Feast Feature Store & Point-in-Time Join</h2>
           </div>
-          <span class="pill-badge bg-emerald-950 text-emerald-400 border border-emerald-800 font-mono text-xs">GATE 4 · 30 PTS</span>
+          <span class="pill-badge bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-xs">GATE 4 · 30 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-2.5 text-xs text-slate-300">
-            <h4 class="font-bold text-slate-100 text-sm">3 Khái Niệm Cốt Lõi Feast:</h4>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-emerald-400">1. Đăng ký 3 Feature Views:</strong>
-              <div class="text-slate-400 mt-0.5">user_stats, item_features, interaction_features.</div>
+          <div class="space-y-2.5 text-xs text-slate-700">
+            <h4 class="font-bold text-slate-900 text-sm">3 Khái Niệm Cốt Lõi Feast:</h4>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-emerald-700">1. Đăng ký 3 Feature Views:</strong>
+              <div class="text-slate-600 mt-0.5">user_stats, item_features, interaction_features.</div>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-emerald-400">2. Materialize Online Store:</strong>
-              <div class="text-slate-400 mt-0.5">Đẩy dữ liệu mới nhất vào Online Store -> Online lookup <code class="text-emerald-300">P99 &lt; 10ms</code>.</div>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-blue-700">2. Materialize Online Store:</strong>
+              <div class="text-slate-600 mt-0.5">Đẩy dữ liệu mới nhất vào Online Store -> Online lookup <code class="text-blue-700 font-mono font-bold">P99 &lt; 10ms</code>.</div>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-emerald-400">3. Point-in-Time (PIT) Join:</strong>
-              <div class="text-slate-400 mt-0.5">Truy vấn đặc trưng đúng tại thời điểm timestamp lịch sử, triệt tiêu 100% Data Leakage.</div>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-red-600">3. Point-in-Time (PIT) Join:</strong>
+              <div class="text-slate-600 mt-0.5">Truy vấn đặc trưng đúng tại thời điểm timestamp lịch sử, triệt tiêu 100% Data Leakage.</div>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs">
-            <div class="text-slate-400">// Kiểm thử Feast:</div>
-            <div class="p-2 bg-slate-900 rounded-lg text-slate-300">
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-2 font-mono text-xs shadow-sm">
+            <div class="text-slate-500 font-bold">// Kiểm thử Feast:</div>
+            <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-800 hover-glow-box">
               $ feast apply<br/>
-              <span class="text-emerald-400">-> Created 3 feature views</span>
+              <span class="text-emerald-700 font-bold">-> Created 3 feature views</span>
             </div>
-            <div class="p-2 bg-slate-900 rounded-lg text-slate-300">
+            <div class="p-2 bg-white rounded-lg border border-slate-200 text-slate-800 hover-glow-box">
               $ feast materialize-incremental<br/>
-              <span class="text-emerald-400">-> Materializing rows to online store</span>
+              <span class="text-emerald-700 font-bold">-> Materializing rows to online store</span>
             </div>
-            <div class="p-2 bg-slate-900 rounded-lg text-slate-300">
+            <div class="p-2 bg-emerald-50 rounded-lg border border-emerald-200 text-emerald-900 font-bold hover-glow-box">
               get_online_features(user_id="u_001")<br/>
-              <span class="text-emerald-400">-> Latency P99: 4.2ms (&lt; 10ms PASS)</span>
+              <span class="text-emerald-700">-> Latency $P_{99}: 4.2\text{ms}$ (&lt; 10ms PASS)</span>
             </div>
           </div>
         </div>
@@ -529,39 +526,39 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Khối Nâng Cao</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB5: Filtered Search & Vực Thẳm Chọn Lọc (Selectivity Cliff)</h2>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Khối Nâng Cao</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB5: Filtered Search & Vực Thẳm Chọn Lọc (Selectivity Cliff)</h2>
           </div>
-          <span class="pill-badge bg-amber-950 text-amber-400 border border-amber-800 font-mono text-xs">ADVANCED · 10 PTS</span>
+          <span class="pill-badge bg-red-100 text-red-800 border border-red-300 font-mono text-xs">ADVANCED · 10 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-          <div class="glass-card p-4 border-slate-800">
-            <h4 class="font-bold text-red-400 text-sm">1. Post-Filtering</h4>
-            <p class="text-slate-400 mt-1">Tìm top-K vector trước, rồi mới lọc theo metadata.</p>
-            <div class="mt-2 p-2 bg-red-950/50 rounded-lg border border-red-900 text-red-300">
-              ⚠️ Sập recall khi bộ lọc chọn lọc cao (&le; 4% dữ liệu).
+          <div class="glass-card glass-card-red p-4 border-red-200 bg-red-50/40">
+            <h4 class="font-extrabold text-red-700 text-sm">1. Post-Filtering</h4>
+            <p class="text-slate-600 mt-1">Tìm top-K vector trước, rồi mới lọc theo metadata.</p>
+            <div class="mt-2 p-2 bg-white rounded-lg border border-red-300 text-red-700 font-bold">
+              ⚠️ Sập recall khi bộ lọc chọn lọc cao ($\le 4\%$ dữ liệu).
             </div>
           </div>
 
-          <div class="glass-card p-4 border-slate-800">
-            <h4 class="font-bold text-blue-400 text-sm">2. Over-Fetch Ladder</h4>
-            <p class="text-slate-400 mt-1">Tăng top-K lên gấp 10-50 lần để bù đắp.</p>
-            <div class="mt-2 p-2 bg-blue-950/50 rounded-lg border border-blue-900 text-blue-300">
+          <div class="glass-card p-4 border-blue-200 bg-blue-50/40">
+            <h4 class="font-extrabold text-blue-700 text-sm">2. Over-Fetch Ladder</h4>
+            <p class="text-slate-600 mt-1">Tăng top-K lên gấp 10-50 lần để bù đắp.</p>
+            <div class="mt-2 p-2 bg-white rounded-lg border border-blue-300 text-blue-800 font-bold">
               ⚠️ Tốn RAM & tăng độ trễ truy vấn phi mã.
             </div>
           </div>
 
-          <div class="glass-card p-4 border-slate-800">
-            <h4 class="font-bold text-emerald-400 text-sm">3. Filtered-ANN</h4>
-            <p class="text-slate-400 mt-1">Qdrant duyệt index trực tiếp trên tập hợp hợp lệ.</p>
-            <div class="mt-2 p-2 bg-emerald-950/50 rounded-lg border border-emerald-900 text-emerald-300">
+          <div class="glass-card glass-card-emerald p-4 border-emerald-200 bg-emerald-50/40">
+            <h4 class="font-extrabold text-emerald-700 text-sm">3. Filtered-ANN</h4>
+            <p class="text-slate-600 mt-1">Qdrant duyệt index trực tiếp trên tập hợp hợp lệ.</p>
+            <div class="mt-2 p-2 bg-white rounded-lg border border-emerald-300 text-emerald-800 font-bold">
               ✅ Duy trì 100% Recall ở mọi mức độ chọn lọc!
             </div>
           </div>
         </div>
 
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs text-slate-300">
+        <div class="p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm text-xs text-slate-700 hover-glow-box">
           <strong>💡 Bài học rút ra:</strong> Khi xây dựng hệ thống production, hãy luôn sử dụng payload index của Vector DB (Filtered HNSW) thay vì kéo vector thô về rồi tự dùng code Python để lọc!
         </div>
       </div>
@@ -572,37 +569,37 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Khối Nâng Cao</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB6: Agentic Retrieval & Query Planning</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Khối Nâng Cao</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB6: Agentic Retrieval & Query Planning</h2>
           </div>
-          <span class="pill-badge bg-amber-950 text-amber-400 border border-amber-800 font-mono text-xs">ADVANCED · 12 PTS</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">ADVANCED · 12 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div class="space-y-2 text-slate-300">
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-indigo-300 font-bold">1. Query Planning:</strong>
-              <p class="text-slate-400 mt-1">Tách câu hỏi phức hợp đa ý (compound queries) thành các sub-queries độc lập để truy xuất từng phần thông tin.</p>
+          <div class="space-y-2 text-slate-700">
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-blue-700 font-bold">1. Query Planning:</strong>
+              <p class="text-slate-600 mt-1">Tách câu hỏi phức hợp đa ý (compound queries) thành các sub-queries độc lập để truy xuất từng phần thông tin.</p>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-purple-300 font-bold">2. Reflection Loop:</strong>
-              <p class="text-slate-400 mt-1">Agent tự đánh giá xem các tài liệu thu được đã đủ để trả lời câu hỏi chưa. Nếu thiếu, sinh query bổ sung.</p>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-red-600 font-bold">2. Reflection Loop:</strong>
+              <p class="text-slate-600 mt-1">Agent tự đánh giá xem các tài liệu thu được đã đủ để trả lời câu hỏi chưa. Nếu thiếu, sinh query bổ sung.</p>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-emerald-300 font-bold">3. Context Fusion:</strong>
-              <p class="text-slate-400 mt-1">Hàm <code class="text-emerald-300 font-mono">build_context()</code> kết hợp tài liệu từ Qdrant và đặc trưng người dùng từ Feast thành 1 prompt duy nhất.</p>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-emerald-700 font-bold">3. Context Fusion:</strong>
+              <p class="text-slate-600 mt-1">Hàm <code class="text-emerald-700 font-mono font-bold">build_context()</code> kết hợp tài liệu từ Qdrant và đặc trưng người dùng từ Feast thành 1 prompt duy nhất.</p>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs text-slate-300">
-            <div class="text-slate-400">// So sánh ở cùng ngân sách (Budget = 16 docs):</div>
-            <div class="p-2.5 bg-slate-900 rounded-xl">
-              <span class="text-slate-400">Single-shot:</span> Recall: <strong>0.58</strong> | Balance: <strong>0.45</strong>
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-2 font-mono text-xs text-slate-800 shadow-sm">
+            <div class="text-slate-500 font-bold">// So sánh ở cùng ngân sách ($\text{Budget} = 16\text{ docs}$):</div>
+            <div class="p-2.5 bg-white rounded-xl border border-slate-200 hover-glow-box">
+              <span class="text-slate-600">Single-shot:</span> Recall: <strong>0.58</strong> | Balance: <strong>0.45</strong>
             </div>
-            <div class="p-2.5 bg-indigo-950/60 rounded-xl border border-indigo-800 text-indigo-300">
-              <span class="text-indigo-400 font-bold">Agentic Planning:</span> Recall: <strong>0.89</strong> | Balance: <strong>0.84</strong> (Thắng)
+            <div class="p-2.5 bg-blue-50 rounded-xl border border-blue-200 text-blue-900 font-bold hover-glow-box">
+              <span class="text-blue-700">Agentic Planning:</span> Recall: <strong>0.89</strong> | Balance: <strong>0.84</strong> (Thắng)
             </div>
-            <p class="text-[11px] text-slate-400 mt-2">
+            <p class="text-[11px] text-slate-500 mt-2">
               Agentic Retrieval vượt trội nhờ giải quyết được độ bao phủ các khía cạnh khác nhau của câu hỏi.
             </p>
           </div>
@@ -615,36 +612,36 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Khối Nâng Cao</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB7: Semantic Cache & Bảo Mật Cross-Tenant</h2>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Khối Nâng Cao</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB7: Semantic Cache & Bảo Mật Cross-Tenant</h2>
           </div>
-          <span class="pill-badge bg-amber-950 text-amber-400 border border-amber-800 font-mono text-xs">ADVANCED · 12 PTS</span>
+          <span class="pill-badge bg-red-100 text-red-800 border border-red-300 font-mono text-xs">ADVANCED · 12 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div class="space-y-2.5 text-slate-300">
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-amber-300 font-bold">1. Sweep Ngưỡng Similarity:</strong>
-              <p class="text-slate-400 mt-1">Tìm điểm cân bằng giữa tỷ lệ Tiết Kiệm (Cache Hit) và Tỷ lệ Trả lời Sai (False Positive).</p>
+          <div class="space-y-2.5 text-slate-700">
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-blue-700 font-bold">1. Sweep Ngưỡng Similarity:</strong>
+              <p class="text-slate-600 mt-1">Tìm điểm cân bằng giữa tỷ lệ Tiết Kiệm (Cache Hit) và Tỷ lệ Trả lời Sai (False Positive).</p>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-red-400 font-bold">2. Nguy cơ Rò Rỉ Tenant:</strong>
-              <p class="text-slate-400 mt-1">Nếu không cách ly namespace theo <code class="text-red-300 font-mono">tenant_id</code>, nhân viên công ty A có thể đọc trúng cache tài liệu mật của công ty B!</p>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-red-600 font-bold">2. Nguy cơ Rò Rỉ Tenant:</strong>
+              <p class="text-slate-600 mt-1">Nếu không cách ly namespace theo <code class="text-red-600 font-mono font-bold">tenant_id</code>, nhân viên công ty A có thể đọc trúng cache tài liệu mật của công ty B!</p>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs">
-            <div class="text-slate-400">// Bảng Sweep Ngưỡng:</div>
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-2 font-mono text-xs shadow-sm">
+            <div class="text-slate-500 font-bold">// Bảng Sweep Ngưỡng:</div>
             <table class="w-full text-left border-collapse">
               <thead>
-                <tr class="border-b border-slate-800 text-slate-400">
+                <tr class="border-b-2 border-slate-200 text-slate-600">
                   <th>Threshold</th><th>Tiết kiệm</th><th>Trả lời sai</th><th>Đánh giá</th>
                 </tr>
               </thead>
-              <tbody class="text-slate-300">
-                <tr><td>0.70</td><td>65%</td><td class="text-red-400 font-bold">18% (Quá cao)</td><td>Nguy hiểm</td></tr>
+              <tbody class="text-slate-700">
+                <tr><td>0.70</td><td>65%</td><td class="text-red-600 font-bold">18% (Quá cao)</td><td>Nguy hiểm</td></tr>
                 <tr><td>0.85</td><td>42%</td><td>1.5%</td><td>Chấp nhận được</td></tr>
-                <tr class="text-emerald-400 font-bold"><td>0.92</td><td>34%</td><td>0.0%</td><td>Tối ưu</td></tr>
+                <tr class="text-emerald-700 font-bold"><td>0.92</td><td>34%</td><td>0.0%</td><td>Tối ưu</td></tr>
               </tbody>
             </table>
           </div>
@@ -657,31 +654,31 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">Khối Nâng Cao</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">NB8: Feature Engineering & Chống Leakage</h2>
+            <span class="text-xs font-mono font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Khối Nâng Cao</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">NB8: Feature Engineering & Chống Leakage</h2>
           </div>
-          <span class="pill-badge bg-amber-950 text-amber-400 border border-amber-800 font-mono text-xs">ADVANCED · 16 PTS</span>
+          <span class="pill-badge bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-xs">ADVANCED · 16 PTS</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-          <div class="space-y-2 text-slate-300">
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-red-400 font-bold">1. Target Encoding Leakage Gap:</strong>
-              <p class="text-slate-400 mt-1">Tính target mean trên toàn tập gây ảo tưởng AUC train 0.99 vs test 0.65 (gap > 0.30). Cách sửa: In-fold Out-of-Fold encoding.</p>
+          <div class="space-y-2 text-slate-700">
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-red-600 font-bold">1. Target Encoding Leakage Gap:</strong>
+              <p class="text-slate-600 mt-1">Tính target mean trên toàn tập gây ảo tưởng AUC train 0.99 vs test 0.65 ($\text{gap} > 0.30$). Cách sửa: In-fold Out-of-Fold encoding.</p>
             </div>
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800">
-              <strong class="text-purple-300 font-bold">2. On-Demand Feature Views (ODFV):</strong>
-              <p class="text-slate-400 mt-1">Tính toán realtime dựa trên request parameters (ví dụ: <code class="text-purple-300 font-mono">amount_vs_avg_spend = request.amount / user.avg_spend</code>).</p>
+            <div class="p-3 bg-white rounded-xl border border-slate-200 shadow-sm hover-glow-box">
+              <strong class="text-blue-700 font-bold">2. On-Demand Feature Views (ODFV):</strong>
+              <p class="text-slate-600 mt-1">Tính toán realtime dựa trên request parameters (ví dụ: <code class="text-blue-700 font-mono font-bold">amount_vs_avg_spend = request.amount / user.avg_spend</code>).</p>
             </div>
           </div>
 
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs text-slate-300">
-            <div class="text-slate-400">// Kết quả kiểm định:</div>
-            <div class="p-2 bg-slate-900 rounded-lg">
-              <span>Target-Naive Gap:</span> <strong class="text-red-400">0.34 (Leakage)</strong>
+          <div class="p-4 bg-slate-50 rounded-2xl border-2 border-slate-200 space-y-2 font-mono text-xs text-slate-800 shadow-sm">
+            <div class="text-slate-500 font-bold">// Kết quả kiểm định:</div>
+            <div class="p-2 bg-white rounded-lg border border-slate-200 hover-glow-box">
+              <span>Target-Naive Gap:</span> <strong class="text-red-600">0.34 (Leakage)</strong>
             </div>
-            <div class="p-2 bg-emerald-950/50 border border-emerald-800 rounded-lg">
-              <span>In-Fold Gap:</span> <strong class="text-emerald-400">0.02 (Chính xác)</strong>
+            <div class="p-2 bg-emerald-50 border border-emerald-300 rounded-lg hover-glow-box">
+              <span>In-Fold Gap:</span> <strong class="text-emerald-700">0.02 (Chính xác)</strong>
             </div>
           </div>
         </div>
@@ -693,52 +690,52 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800">Công Cụ Trực Quan</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">⚡ Trình Giả Lập Tương Tác: RRF & Filtered Search</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Công Cụ Trực Quan</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">⚡ Trình Giả Lập Tương Tác: RRF & Filtered Search</h2>
           </div>
-          <span class="pill-badge bg-indigo-950 text-indigo-300 border border-indigo-800 font-mono text-xs">Live Simulators</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">Live Simulators</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- SIMULATOR 1: RRF CALCULATOR -->
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+          <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 shadow-sm hover-glow-box">
             <div class="flex items-center justify-between">
-              <strong class="text-blue-400 text-xs font-mono uppercase">1. RRF Score Calculator (NB2)</strong>
-              <label class="flex items-center gap-1.5 text-[11px] text-slate-400 cursor-pointer">
-                <input type="checkbox" id="rrf-rank-base" onchange="updateRRFSimulator()" class="rounded border-slate-700 bg-slate-900 text-blue-600">
+              <strong class="text-blue-700 text-xs font-mono uppercase font-bold">1. RRF Score Calculator (NB2)</strong>
+              <label class="flex items-center gap-1.5 text-[11px] text-slate-600 cursor-pointer">
+                <input type="checkbox" id="rrf-rank-base" onchange="updateRRFSimulator()" class="rounded border-slate-300 text-blue-600">
                 <span>0-based (Trap)</span>
               </label>
             </div>
 
             <div class="space-y-2 text-xs">
               <div>
-                <div class="flex justify-between text-slate-400 mb-1">
+                <div class="flex justify-between text-slate-600 mb-1">
                   <span>BM25 Rank:</span>
-                  <span id="rrf-bm25-val" class="font-mono text-blue-400 font-bold">#1</span>
+                  <span id="rrf-bm25-val" class="font-mono text-blue-700 font-bold">#1</span>
                 </div>
                 <input type="range" id="rrf-bm25-rank" min="1" max="25" value="1" oninput="updateRRFSimulator()">
               </div>
 
               <div>
-                <div class="flex justify-between text-slate-400 mb-1">
+                <div class="flex justify-between text-slate-600 mb-1">
                   <span>Dense Vector Rank:</span>
-                  <span id="rrf-vector-val" class="font-mono text-purple-400 font-bold">#2</span>
+                  <span id="rrf-vector-val" class="font-mono text-indigo-700 font-bold">#2</span>
                 </div>
                 <input type="range" id="rrf-vector-rank" min="1" max="25" value="2" oninput="updateRRFSimulator()">
               </div>
 
               <div>
-                <div class="flex justify-between text-slate-400 mb-1">
+                <div class="flex justify-between text-slate-600 mb-1">
                   <span>Hằng số k:</span>
-                  <span id="rrf-k-val" class="font-mono text-slate-200 font-bold">k = 60</span>
+                  <span id="rrf-k-val" class="font-mono text-slate-800 font-bold">k = 60</span>
                 </div>
                 <input type="range" id="rrf-k-const" min="10" max="100" value="60" oninput="updateRRFSimulator()">
               </div>
             </div>
 
-            <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-center">
-              <div class="text-[10px] text-slate-400 uppercase font-mono">Điểm RRF Tổng Hợp:</div>
-              <div id="rrf-score-result" class="text-2xl font-black text-emerald-400 font-mono mt-0.5">0.03253</div>
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
+              <div class="text-[10px] text-slate-500 uppercase font-mono font-bold">Điểm RRF Tổng Hợp:</div>
+              <div id="rrf-score-result" class="text-2xl font-black text-blue-700 font-mono mt-0.5">0.03253</div>
             </div>
 
             <div id="rrf-formula-breakdown"></div>
@@ -746,15 +743,15 @@
           </div>
 
           <!-- SIMULATOR 2: SELECTIVITY CLIFF -->
-          <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
+          <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-3 flex flex-col justify-between shadow-sm hover-glow-box">
             <div>
               <div class="flex items-center justify-between">
-                <strong class="text-purple-400 text-xs font-mono uppercase">2. Selectivity Cliff Visualizer (NB5)</strong>
-                <span id="selectivity-val" class="font-mono text-xs text-amber-400 font-bold">4%</span>
+                <strong class="text-red-700 text-xs font-mono uppercase font-bold">2. Selectivity Cliff Visualizer (NB5)</strong>
+                <span id="selectivity-val" class="font-mono text-xs text-red-600 font-bold">4%</span>
               </div>
 
               <div class="mt-3 space-y-2 text-xs">
-                <div class="flex justify-between text-slate-400">
+                <div class="flex justify-between text-slate-600 font-medium">
                   <span>Tỷ lệ dữ liệu thỏa bộ lọc (Selectivity):</span>
                 </div>
                 <input type="range" id="selectivity-slider" min="1" max="100" value="4" oninput="updateSelectivitySimulator()">
@@ -764,27 +761,27 @@
               <div class="mt-4 space-y-3 text-xs">
                 <div>
                   <div class="flex justify-between mb-1">
-                    <span class="text-slate-400 font-mono">Post-Filtering Recall:</span>
-                    <span id="post-filter-recall-val" class="font-mono font-bold text-red-400">35% Recall</span>
+                    <span class="text-slate-600 font-mono font-semibold">Post-Filtering Recall:</span>
+                    <span id="post-filter-recall-val" class="font-mono font-bold text-red-600">35% Recall</span>
                   </div>
-                  <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
-                    <div id="post-filter-recall-bar" class="h-full bg-red-500 rounded-full" style="width: 35%;"></div>
+                  <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                    <div id="post-filter-recall-bar" class="h-full bg-red-600 rounded-full" style="width: 35%;"></div>
                   </div>
                 </div>
 
                 <div>
                   <div class="flex justify-between mb-1">
-                    <span class="text-slate-400 font-mono">Filtered-ANN Recall:</span>
-                    <span id="ann-recall-val" class="font-mono font-bold text-emerald-400">100% Recall</span>
+                    <span class="text-slate-600 font-mono font-semibold">Filtered-ANN Recall:</span>
+                    <span id="ann-recall-val" class="font-mono font-bold text-emerald-700">100% Recall</span>
                   </div>
-                  <div class="w-full h-3 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
-                    <div id="ann-recall-bar" class="h-full bg-emerald-500 rounded-full" style="width: 100%;"></div>
+                  <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+                    <div id="ann-recall-bar" class="h-full bg-emerald-600 rounded-full" style="width: 100%;"></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div id="overfetch-advice" class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs text-slate-300">
+            <div id="overfetch-advice" class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700 font-medium">
               Kéo thanh trượt để quan sát hiện tượng sập recall của Post-filtering khi selectivity giảm xuống dưới 5%!
             </div>
           </div>
@@ -797,17 +794,17 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-blue-400 bg-blue-950/80 px-2 py-0.5 rounded border border-blue-800">Phương Pháp Thực Hành</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">🤖 Vibe Coding Playbook: SDD & TDD trong LLM Era</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Phương Pháp Thực Hành</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">🤖 Vibe Coding Playbook: SDD & TDD trong LLM Era</h2>
           </div>
-          <span class="pill-badge bg-blue-950 text-blue-300 border border-blue-800 font-mono text-xs">Vibe Coding 2026</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">Vibe Coding 2026</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
           <!-- Column 1: Delegate to AI -->
-          <div class="glass-card p-4 border-blue-900/60 bg-blue-950/20 space-y-2">
-            <span class="pill-badge bg-blue-900 text-blue-300 border border-blue-700 text-xs">Phần việc để AI sinh (Delegate)</span>
-            <ul class="space-y-1.5 text-slate-300 mt-2">
+          <div class="glass-card p-4 border-blue-200 bg-blue-50/40 space-y-2">
+            <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-200 text-xs">Phần việc để AI sinh (Delegate)</span>
+            <ul class="space-y-1.5 text-slate-700 mt-2 font-medium">
               <li>• Viết FastAPI routes và Pydantic response models.</li>
               <li>• Sinh script benchmark đo lường percentile $P_{50}, P_{95}, P_{99}$.</li>
               <li>• Sinh code pytest scaffolding và test cases.</li>
@@ -816,9 +813,9 @@
           </div>
 
           <!-- Column 2: Architect Review -->
-          <div class="glass-card p-4 border-purple-900/60 bg-purple-950/20 space-y-2">
-            <span class="pill-badge bg-purple-900 text-purple-300 border border-purple-700 text-xs">Kỹ sư phải tự quyết định (Architect)</span>
-            <ul class="space-y-1.5 text-slate-300 mt-2">
+          <div class="glass-card glass-card-red p-4 border-red-200 bg-red-50/40 space-y-2">
+            <span class="pill-badge bg-red-100 text-red-800 border border-red-200 text-xs">Kỹ sư phải tự quyết định (Architect)</span>
+            <ul class="space-y-1.5 text-slate-700 mt-2 font-medium">
               <li>• <strong>Review Diff:</strong> Kiểm tra công thức RRF (chắc chắn rank 1-based).</li>
               <li>• <strong>Data Leakage:</strong> Đảm bảo chỉ dùng Point-in-Time join cho lịch sử.</li>
               <li>• <strong>Tenant Boundary:</strong> Kiểm tra cache key có gắn namespace.</li>
@@ -827,9 +824,9 @@
           </div>
         </div>
 
-        <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 text-xs text-slate-300 flex items-center justify-between">
-          <span>⚠️ <strong>Nguyên tắc vàng:</strong> Vibe coding mà không review diff = "Đánh bạc với mã nguồn"!</span>
-          <span class="font-mono text-blue-400">Spec -> Prompt -> Review Diff -> Run Test</span>
+        <div class="p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm text-xs text-slate-700 flex items-center justify-between hover-glow-box">
+          <span>⚠️ <strong class="text-red-600">Nguyên tắc vàng:</strong> Vibe coding mà không review diff = "Đánh bạc với mã nguồn"!</span>
+          <span class="font-mono text-blue-700 font-bold">Spec -> Prompt -> Review Diff -> Run Test</span>
         </div>
       </div>
     </div>
@@ -839,42 +836,42 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-red-400 bg-red-950/80 px-2 py-0.5 rounded border border-red-800">Cảnh Báo Lỗi Sai</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">⚠️ 10 Bẫy Sai Lầm Phổ Biến Nhất Cần Tránh</h2>
+            <span class="text-xs font-mono font-black uppercase text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">Cảnh Báo Lỗi Sai</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">⚠️ 10 Bẫy Sai Lầm Phổ Biến Nhất Cần Tránh</h2>
           </div>
-          <span class="pill-badge bg-red-950 text-red-400 border border-red-800 font-mono text-xs">10 Pitfalls</span>
+          <span class="pill-badge bg-red-100 text-red-800 border border-red-300 font-mono text-xs">10 Pitfalls</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">1. Rank 0-based trong RRF:</strong> Làm méo mó điểm số phần tử đứng đầu.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">1. Rank 0-based trong RRF:</strong> Làm méo mó điểm số phần tử đứng đầu.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">2. Đổi Model nhưng không Re-Index:</strong> Lệch số chiều vector làm crash Qdrant.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">2. Đổi Model nhưng không Re-Index:</strong> Lệch số chiều vector làm crash Qdrant.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">3. Target Encoding Leakage:</strong> Tính mean trên toàn tập gây ảo tưởng AUC.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">3. Target Encoding Leakage:</strong> Tính mean trên toàn tập gây ảo tưởng AUC.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">4. Latest Join thay vì PIT Join:</strong> Mô hình học trước dữ liệu tương lai.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">4. Latest Join thay vì PIT Join:</strong> Mô hình học trước dữ liệu tương lai.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">5. Quên Warm-up trước khi đo P99:</strong> Dính cold start spike vượt 50ms.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">5. Quên Warm-up trước khi đo P99:</strong> Dính cold start spike vượt 50ms.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">6. Semantic Cache rò rỉ Tenant:</strong> Thiếu tenant_id trong cache key.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">6. Semantic Cache rò rỉ Tenant:</strong> Thiếu tenant_id trong cache key.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">7. Post-filtering trên tập lọc chặt:</strong> Gặp hiện tượng Selectivity Cliff.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">7. Post-filtering trên tập lọc chặt:</strong> Gặp hiện tượng Selectivity Cliff.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">8. Cố chạy Docker trên máy yếu:</strong> Tràn RAM swap thay vì dùng Lite mode.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">8. Cố chạy Docker trên máy yếu:</strong> Tràn RAM swap thay vì dùng Lite mode.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">9. Vibe-coding không review diff:</strong> Bỏ sót các bug tính toán ngầm.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">9. Vibe-coding không review diff:</strong> Bỏ sót các bug tính toán ngầm.
           </div>
-          <div class="p-2.5 bg-slate-900/80 rounded-xl border border-slate-800 text-slate-300">
-            <strong class="text-red-400">10. Nộp repo Private lên LMS:</strong> Grader không tải được code -> 0 điểm.
+          <div class="p-2.5 bg-white rounded-xl border border-slate-200 text-slate-700 shadow-sm hover-glow-box">
+            <strong class="text-red-600">10. Nộp repo Private lên LMS:</strong> Grader không tải được code -> 0 điểm.
           </div>
         </div>
       </div>
@@ -885,52 +882,52 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">Thang Điểm & Nghiệm Thu</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">📊 5 Gate Đánh Giá Chi Tiết (100 Core + 50 Advanced)</h2>
+            <span class="text-xs font-mono font-black uppercase text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Thang Điểm & Nghiệm Thu</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">📊 5 Gate Đánh Giá Chi Tiết (100 Core + 50 Advanced)</h2>
           </div>
-          <span class="pill-badge bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono text-xs">GATE 5 · RUBRIC</span>
+          <span class="pill-badge bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-xs">GATE 5 · RUBRIC</span>
         </div>
 
         <div class="space-y-2 text-xs">
-          <div class="p-2.5 bg-slate-900/90 rounded-xl border border-blue-900/60 flex items-center justify-between">
+          <div class="p-3 bg-white rounded-xl border border-blue-200 flex items-center justify-between shadow-sm hover-glow-box">
             <div>
-              <strong class="text-blue-400">GATE 1 (20 pts):</strong> Vector Index Integrity (1000 docs, top-5 paraphrase đúng cluster).
+              <strong class="text-blue-700">GATE 1 (20 pts):</strong> Vector Index Integrity (1000 docs, top-5 paraphrase đúng cluster).
             </div>
-            <span class="font-mono text-blue-300 font-bold">NB1</span>
+            <span class="font-mono text-blue-700 font-bold">NB1</span>
           </div>
 
-          <div class="p-2.5 bg-slate-900/90 rounded-xl border border-indigo-900/60 flex items-center justify-between">
+          <div class="p-3 bg-white rounded-xl border border-red-200 flex items-center justify-between shadow-sm hover-glow-box">
             <div>
-              <strong class="text-indigo-400">GATE 2 (25 pts):</strong> Hybrid RRF Superiority (1-based rank, Precision@10 Hybrid > Keyword & Vector).
+              <strong class="text-red-700">GATE 2 (25 pts):</strong> Hybrid RRF Superiority (1-based rank, $\text{Precision}@10\text{ Hybrid} > \text{Keyword} \& \text{Vector}$).
             </div>
-            <span class="font-mono text-indigo-300 font-bold">NB2</span>
+            <span class="font-mono text-red-700 font-bold">NB2</span>
           </div>
 
-          <div class="p-2.5 bg-slate-900/90 rounded-xl border border-purple-900/60 flex items-center justify-between">
+          <div class="p-3 bg-white rounded-xl border border-blue-200 flex items-center justify-between shadow-sm hover-glow-box">
             <div>
-              <strong class="text-purple-400">GATE 3 (25 pts):</strong> FastAPI Latency (Response có latency_ms, P99 &lt; 50ms server-side).
+              <strong class="text-blue-700">GATE 3 (25 pts):</strong> FastAPI Latency (Response có latency_ms, $P_{99} < 50\text{ms}$ server-side).
             </div>
-            <span class="font-mono text-purple-300 font-bold">NB3</span>
+            <span class="font-mono text-blue-700 font-bold">NB3</span>
           </div>
 
-          <div class="p-2.5 bg-slate-900/90 rounded-xl border border-emerald-900/60 flex items-center justify-between">
+          <div class="p-3 bg-white rounded-xl border border-emerald-200 flex items-center justify-between shadow-sm hover-glow-box">
             <div>
-              <strong class="text-emerald-400">GATE 4 (30 pts):</strong> Feast Feature Store (3 views, Materialize, Online P99 &lt; 10ms, PIT join chuẩn).
+              <strong class="text-emerald-700">GATE 4 (30 pts):</strong> Feast Feature Store (3 views, Materialize, Online $P_{99} < 10\text{ms}$, PIT join chuẩn).
             </div>
-            <span class="font-mono text-emerald-300 font-bold">NB4</span>
+            <span class="font-mono text-emerald-700 font-bold">NB4</span>
           </div>
 
-          <div class="p-2.5 bg-slate-900/90 rounded-xl border border-amber-900/60 flex items-center justify-between">
+          <div class="p-3 bg-white rounded-xl border border-slate-300 flex items-center justify-between shadow-sm hover-glow-box">
             <div>
-              <strong class="text-amber-400">GATE 5 (Overall):</strong> Clean Reproducibility &amp; LMS Submission (Đầy đủ output cells, screenshots, Reflection).
+              <strong class="text-slate-800">GATE 5 (Overall):</strong> Clean Reproducibility &amp; LMS Submission (Đầy đủ output cells, screenshots, Reflection).
             </div>
-            <span class="font-mono text-amber-300 font-bold">LMS</span>
+            <span class="font-mono text-slate-700 font-bold">LMS</span>
           </div>
         </div>
 
-        <div class="p-3 bg-slate-900/80 rounded-xl border border-slate-800 flex items-center justify-between text-xs text-slate-300 font-mono">
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs text-slate-700 font-mono hover-glow-box">
           <span>Điểm tối đa: <strong>100 pts (Core) + 50 pts (NB5-8) + 20 pts (Bonus Memory Agent)</strong></span>
-          <span class="text-emerald-400">Trọng số Track 2: 30%</span>
+          <span class="text-emerald-700 font-bold">Trọng số Track 2: 30%</span>
         </div>
       </div>
     </div>
@@ -940,10 +937,10 @@
       <div class="glass-panel p-6 md:p-8 w-full flex flex-col gap-4 max-h-[86vh] overflow-y-auto">
         <div class="flex items-center justify-between">
           <div>
-            <span class="text-[11px] font-mono font-bold uppercase text-purple-400 bg-purple-950/80 px-2 py-0.5 rounded border border-purple-800">Kiểm Tra Nhanh & Nộp Bài</span>
-            <h2 class="text-xl md:text-3xl font-extrabold text-slate-100 tracking-tight mt-1">🧪 Mini Checkpoint Quiz & Checklist Nộp Bài LMS</h2>
+            <span class="text-xs font-mono font-black uppercase text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Kiểm Tra Nhanh & Nộp Bài</span>
+            <h2 class="text-xl md:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">🧪 Mini Checkpoint Quiz & Checklist Nộp Bài LMS</h2>
           </div>
-          <span class="pill-badge bg-purple-950 text-purple-300 border border-purple-800 font-mono text-xs">Self Check</span>
+          <span class="pill-badge bg-blue-100 text-blue-800 border border-blue-300 font-mono text-xs">Self Check</span>
         </div>
 
         <!-- Quiz List Container -->
@@ -952,9 +949,9 @@
         </div>
 
         <!-- Submission Checklist -->
-        <div class="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 text-xs text-slate-300">
-          <strong class="text-slate-100 text-sm font-bold">📋 Checklist Bắt Buộc Trước Khi Nộp:</strong>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-300">
+        <div class="p-4 bg-white rounded-2xl border-2 border-slate-200 space-y-2 text-xs text-slate-700 shadow-sm hover-glow-box">
+          <strong class="text-slate-900 text-sm font-bold">📋 Checklist Bắt Buộc Trước Khi Nộp:</strong>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-slate-700 font-medium">
             <div>✔ 4 Notebooks Core (.ipynb có đầy đủ output cells).</div>
             <div>✔ Thư mục submission/screenshots/ đầy đủ ảnh chụp.</div>
             <div>✔ Điền hoàn chỉnh submission/REFLECTION.md (&le; 200 chữ).</div>

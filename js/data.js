@@ -39,14 +39,14 @@ const LAB_19_DATA = {
     }
   ],
   phases: [
-    { title: "NB1: Vector Indexing", time: "0:00 - 0:20", duration: 20, key: "nb1", desc: "Embed 1000 docs tiếng Việt bằng fastembed (384d), index vào Qdrant collection lab19." },
-    { title: "NB2: Hybrid Search & RRF", time: "0:20 - 0:50", duration: 30, key: "nb2", desc: "Kết hợp BM25 + Qdrant theo công thức RRF 1/(60+rank). Đo Precision@10 trên 50 golden queries." },
-    { title: "NB3: FastAPI & P99", time: "0:50 - 1:15", duration: 25, key: "nb3", desc: "Triển khai REST API GET /search?q=...&mode=hybrid. Đo P50/P95/P99 latency < 50ms." },
-    { title: "NB4: Feast Feature Store", time: "1:15 - 1:50", duration: 35, key: "nb4", desc: "Đăng ký 3 feature views, feast apply, materialize online store, PIT historical join." },
-    { title: "NB5: Filtered Search (Adv)", time: "1:50 - 2:10", duration: 20, key: "nb5", desc: "Post-filter vs Pre-filter vs Filtered-ANN. Chứng minh hiện tượng sập recall khi selectivity <= 4%." },
-    { title: "NB6: Agentic Retrieval (Adv)", time: "2:10 - 2:35", duration: 25, key: "nb6", desc: "Retrieval-as-a-tool, query planner tách sub-queries, reflection, build_context kết hợp Feast." },
-    { title: "NB7: Semantic Cache (Adv)", time: "2:35 - 2:50", duration: 15, key: "nb7", desc: "Sweep ngưỡng tương đồng vs tỷ lệ trả lời sai. Demo và fix rò chéo tenant namespace." },
-    { title: "NB8: Feature Engineering (Adv)", time: "2:50 - 3:10", duration: 20, key: "nb8", desc: "Target-encoding leakage gap > 0.30 trên session_id, so sánh PIT vs Latest join, On-demand view." }
+    { title: "NB1: Vector Indexing", duration: 20, key: "nb1", desc: "Embed 1000 docs tiếng Việt bằng fastembed (384d), index vào Qdrant collection lab19." },
+    { title: "NB2: Hybrid Search & RRF", duration: 30, key: "nb2", desc: "Kết hợp BM25 + Qdrant theo công thức RRF 1/(60+rank). Đo Precision@10 trên 50 golden queries." },
+    { title: "NB3: FastAPI & P99", duration: 25, key: "nb3", desc: "Triển khai REST API GET /search?q=...&mode=hybrid. Đo P50/P95/P99 latency < 50ms." },
+    { title: "NB4: Feast Feature Store", duration: 35, key: "nb4", desc: "Đăng ký 3 feature views, feast apply, materialize online store, PIT historical join." },
+    { title: "NB5: Filtered Search (Adv)", duration: 20, key: "nb5", desc: "Post-filter vs Pre-filter vs Filtered-ANN. Chứng minh hiện tượng sập recall khi selectivity <= 4%." },
+    { title: "NB6: Agentic Retrieval (Adv)", duration: 25, key: "nb6", desc: "Retrieval-as-a-tool, query planner tách sub-queries, reflection, build_context kết hợp Feast." },
+    { title: "NB7: Semantic Cache (Adv)", duration: 15, key: "nb7", desc: "Sweep ngưỡng tương đồng vs tỷ lệ trả lời sai. Demo và fix rò chéo tenant namespace." },
+    { title: "NB8: Feature Engineering (Adv)", duration: 20, key: "nb8", desc: "Target-encoding leakage gap > 0.30 trên session_id, so sánh PIT vs Latest join, On-demand view." }
   ],
   gates: [
     {
@@ -108,7 +108,7 @@ const LAB_19_DATA = {
         "4 Notebooks Core được nộp dưới dạng .ipynb kèm toàn bộ output cells đã thực thi",
         "Ảnh chụp màn hình kết quả tại submission/screenshots/ đầy đủ",
         "Điền hoàn chỉnh submission/REFLECTION.md (<= 200 chữ phân tích so sánh 3 modes)",
-        "Repo GitHub công khai (Public) và dán link vào VinUni LMS"
+        "Repo GitHub được mở Public và dán link vào VinUni LMS"
       ],
       failTrap: "Để repo GitHub ở chế độ Private (0 điểm tự động) hoặc nộp notebook rỗng không có output."
     }
