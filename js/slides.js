@@ -35,8 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     slideViews.forEach((view, idx) => {
       if (idx === index) {
         view.classList.add('active');
-        const scrollPanel = view.querySelector('.slide-scroll-panel');
-        if (scrollPanel) scrollPanel.scrollTop = 0;
       } else {
         view.classList.remove('active');
       }
@@ -152,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // ================= INTERACTIVE RUBRIC CHECKLIST =================
+  // ================= INTERACTIVE RUBRIC CHECKLIST (CORE 70, ADVANCED 30, BONUS 20) =================
   window.currentRubricTab = 'core';
   const rubricCheckedState = {};
 
@@ -171,16 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!contentContainer || !LAB_19_DATA) return;
 
     let items = [];
-    let maxPts = 100;
+    let maxPts = 70;
     let badgeClass = "bg-blue-50 text-blue-700 border-blue-200";
 
     if (tabName === 'core') {
       items = LAB_19_DATA.rubricCore;
-      maxPts = 100;
+      maxPts = 70;
       badgeClass = "bg-blue-50 text-blue-700 border-blue-200";
     } else if (tabName === 'advanced') {
       items = LAB_19_DATA.rubricAdvanced;
-      maxPts = 50;
+      maxPts = 30;
       badgeClass = "bg-red-50 text-red-700 border-red-200";
     } else if (tabName === 'bonus') {
       items = LAB_19_DATA.rubricBonus;
@@ -191,40 +189,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Group items by Notebook
     const grouped = {};
     items.forEach(item => {
-      const groupKey = item.nb || "Bonus Challenge (Tùy chọn)";
+      const groupKey = item.nb || "Bonus Challenge";
       if (!grouped[groupKey]) grouped[groupKey] = [];
       grouped[groupKey].push(item);
     });
 
     contentContainer.innerHTML = `
-      <div class="space-y-3">
+      <div class="flex flex-col h-full space-y-2.5">
         <!-- Live Score Summary Bar -->
-        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1 shrink-0">
           <div class="flex items-center justify-between text-xs text-slate-700">
-            <span id="rubric-progress-text" class="font-bold">Điểm tích lũy: <strong>0/${maxPts} điểm</strong> (0/${items.length} tiêu chí)</span>
-            <span class="font-mono text-emerald-700 font-bold" id="rubric-status-badge">Chưa đạt</span>
+            <span id="rubric-progress-text" class="font-bold">Tiến độ tích lũy: <strong>0/${maxPts} điểm</strong> (0/${items.length} tiêu chí)</span>
+            <span class="font-mono text-emerald-700 font-bold" id="rubric-status-badge">Chưa hoàn tất</span>
           </div>
-          <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+          <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
             <div id="rubric-progress-bar" class="h-full bg-gradient-to-r from-blue-600 to-emerald-600 rounded-full transition-all duration-300" style="width: 0%;"></div>
           </div>
         </div>
 
-        <!-- Checklist Cards Grouped by Notebook -->
-        <div class="space-y-2.5">
+        <!-- Scrollable Checklist Cards Grouped by Notebook -->
+        <div class="space-y-2 overflow-y-auto max-h-[46vh] pr-1.5 custom-scrollbar">
           ${Object.keys(grouped).map(groupName => `
-            <div class="p-3 bg-white rounded-xl border-2 border-slate-200 shadow-sm space-y-1.5 hover-glow-box">
+            <div class="p-2.5 bg-white rounded-xl border-2 border-slate-200 shadow-sm space-y-1">
               <div class="flex items-center justify-between border-b border-slate-100 pb-1">
                 <span class="font-mono text-xs font-black text-blue-700">${groupName}</span>
                 <span class="text-[11px] text-slate-500 font-bold">${grouped[groupName].reduce((s, x) => s + x.pts, 0)} pts</span>
               </div>
-              <div class="space-y-1 pt-1">
+              <div class="space-y-1 pt-0.5">
                 ${grouped[groupName].map(item => `
-                  <label class="flex items-start justify-between gap-2 text-xs text-slate-700 cursor-pointer select-none p-2 rounded-lg hover:bg-slate-50 border border-transparent transition" id="label-${item.id}">
-                    <div class="flex items-start gap-2.5">
+                  <label class="flex items-start justify-between gap-2 text-xs text-slate-700 cursor-pointer select-none p-1.5 rounded-lg hover:bg-slate-50 border border-transparent transition" id="label-${item.id}">
+                    <div class="flex items-start gap-2">
                       <input type="checkbox" id="${item.id}" onchange="updateRubricChecklist('${tabName}')" class="rubric-check-item mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer" ${rubricCheckedState[item.id] ? 'checked' : ''}>
-                      <span class="font-medium leading-snug text-slate-800">${item.criterion}</span>
+                      <span class="font-medium leading-tight">${item.criterion}</span>
                     </div>
-                    <span class="font-mono font-bold text-[11px] px-2.5 py-0.5 rounded ${badgeClass} border whitespace-nowrap shrink-0">+${item.pts}đ</span>
+                    <span class="font-mono font-bold text-[11px] px-2 py-0.5 rounded ${badgeClass} border whitespace-nowrap shrink-0">+${item.pts}đ</span>
                   </label>
                 `).join('')}
               </div>
@@ -239,21 +237,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.updateRubricChecklist = function(tabName) {
     let items = [];
-    let maxPts = 100;
-    let passThreshold = 70;
-
+    let maxPts = 70;
     if (tabName === 'core') {
       items = LAB_19_DATA.rubricCore;
-      maxPts = 100;
-      passThreshold = 70;
+      maxPts = 70;
     } else if (tabName === 'advanced') {
       items = LAB_19_DATA.rubricAdvanced;
-      maxPts = 50;
-      passThreshold = 35;
+      maxPts = 30;
     } else if (tabName === 'bonus') {
       items = LAB_19_DATA.rubricBonus;
       maxPts = 20;
-      passThreshold = 10;
     }
 
     let earnedPts = 0;
@@ -268,11 +261,11 @@ document.addEventListener('DOMContentLoaded', () => {
           earnedPts += item.pts;
           checkedCount += 1;
           if (lbl) {
-            lbl.classList.add('bg-emerald-50/80', 'border-emerald-300');
+            lbl.classList.add('bg-emerald-50/70', 'border-emerald-200');
           }
         } else {
           if (lbl) {
-            lbl.classList.remove('bg-emerald-50/80', 'border-emerald-300');
+            lbl.classList.remove('bg-emerald-50/70', 'border-emerald-200');
           }
         }
       } else if (rubricCheckedState[item.id]) {
@@ -289,18 +282,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (progressBar) progressBar.style.width = `${pct}%`;
     if (progressText) {
-      progressText.innerHTML = `Điểm tích lũy: <strong class="text-blue-700 text-sm font-black">${earnedPts}/${maxPts} điểm</strong> (${checkedCount}/${items.length} tiêu chí)`;
+      progressText.innerHTML = `Điểm tích lũy: <strong class="text-blue-700">${earnedPts}/${maxPts} điểm</strong> (${checkedCount}/${items.length} tiêu chí)`;
     }
     if (statusBadge) {
       if (earnedPts >= maxPts) {
         statusBadge.innerHTML = `🎉 100% HOÀN HẢO (${earnedPts}đ)`;
         statusBadge.className = "font-mono text-emerald-700 font-bold";
-      } else if (earnedPts >= passThreshold) {
-        statusBadge.innerHTML = `✔ ĐẠT CHUẨN (${earnedPts}đ ≥ ${passThreshold}đ PASS)`;
-        statusBadge.className = "font-mono text-emerald-700 font-bold";
+      } else if (earnedPts >= (maxPts * 0.7)) {
+        statusBadge.innerHTML = `✔ ĐẠT CHUẨN (${earnedPts}đ)`;
+        statusBadge.className = "font-mono text-blue-700 font-bold";
       } else {
-        statusBadge.innerHTML = `Cần thêm ${passThreshold - earnedPts}đ để ĐẠT CHUẨN (${passThreshold}đ)`;
-        statusBadge.className = "font-mono text-amber-700 font-bold";
+        statusBadge.innerHTML = `Tiến độ: ${pct}%`;
+        statusBadge.className = "font-mono text-slate-500 font-bold";
       }
     }
   };

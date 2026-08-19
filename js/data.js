@@ -1,7 +1,6 @@
 /**
- * data.js - Metadata, Exact 1-to-1 Official Rubric (Core 100 pts, Advanced 50 pts, Bonus 20 pts), and Anti-Patterns
+ * data.js - Metadata, Official Rubrics (Core 70 + Advanced 30 + Bonus 20), Checklist, and Anti-Patterns
  * VinUni Codelab - AICB Track 2: Vector Store + Feature Store
- * Exact match with rubric.md
  */
 
 const LAB_19_DATA = {
@@ -11,52 +10,75 @@ const LAB_19_DATA = {
   durationMinutes: 180,
   repoNamingPattern: "Track2_Day19_MSV_HoVaTen",
   repoNamingExample: "Track2_Day19_20260012_NguyenVanA",
-  
-  // Exact 1-to-1 match with rubric.md (Core total = 100 pts, Target Pass = 70 pts)
+  deliverables: [
+    {
+      id: "del1",
+      title: "1. Vector Index 1000 Docs (NB1)",
+      desc: "Index 1.000 documents tiếng Việt vào Qdrant in-memory với fastembed (384d). Top 5 cho câu hỏi paraphrase phải thuộc đúng topic cluster.",
+      gate: "Gate 1",
+      pts: "15 pts"
+    },
+    {
+      id: "del2",
+      title: "2. Hybrid Search & RRF Precision (NB2)",
+      desc: "Triển khai RRF fusion (k=60, 1-based rank). Precision@10 trung bình: Hybrid > Keyword và Hybrid > Semantic trên 50 golden queries.",
+      gate: "Gate 2",
+      pts: "20 pts"
+    },
+    {
+      id: "del3",
+      title: "3. FastAPI Search & P99 Latency (NB3)",
+      desc: "FastAPI endpoint GET /search trả về schema chuẩn có latency_ms. Đo lường server-side Hybrid P99 < 50ms sau khi warm-up.",
+      gate: "Gate 3",
+      pts: "15 pts"
+    },
+    {
+      id: "del4",
+      title: "4. Feast Feature Store & PIT Join (NB4)",
+      desc: "3 Feature Views registered, materialize-incremental thành công. Online lookup P99 < 10ms & PIT join 3 rows x N features không bị data leak.",
+      gate: "Gate 4",
+      pts: "20 pts"
+    }
+  ],
   rubricCore: [
     { id: "c1", nb: "01_embeddings_index", criterion: "client.count('lab19').count == 1000", pts: 5 },
     { id: "c2", nb: "01_embeddings_index", criterion: "Top-5 kết quả hiển thị cho keyword query (cell §5 output)", pts: 5 },
-    { id: "c3", nb: "01_embeddings_index", criterion: "Paraphrase query (không có từ 'cloud') trả về top-5 đúng chủ đề cloud", pts: 10 },
-    { id: "c4", nb: "02_hybrid_search_rrf", criterion: "search_hybrid triển khai theo công thức RRF 1/(k + rank), rank 1-based", pts: 10 },
+    { id: "c3", nb: "01_embeddings_index", criterion: "Paraphrase query (không có từ 'cloud') trả về top-5 đúng chủ đề cloud", pts: 5 },
+    { id: "c4", nb: "02_hybrid_search_rrf", criterion: "search_hybrid triển khai theo công thức RRF 1/(k + rank), rank 1-based", pts: 5 },
     { id: "c5", nb: "02_hybrid_search_rrf", criterion: "Bảng Precision@10 trung bình: Hybrid > BM25 Keyword VÀ Hybrid > Semantic Vector", pts: 10 },
     { id: "c6", nb: "02_hybrid_search_rrf", criterion: "Phân tích slice query: Hybrid thắng mixed, Vector thắng paraphrase, BM25 thắng exact", pts: 5 },
     { id: "c7", nb: "03_search_api_benchmark", criterion: "FastAPI /search trả về SearchResponse hợp lệ có trường latency_ms", pts: 5 },
-    { id: "c8", nb: "03_search_api_benchmark", criterion: "Bảng độ trễ P50/P95/P99 cho 3 chế độ (đo lường phía server)", pts: 10 },
-    { id: "c9", nb: "03_search_api_benchmark", criterion: "Hybrid P99 server-side < 50ms sau khi warm-up", pts: 10 },
-    { id: "c10", nb: "04_feast_feature_store", criterion: "feast apply thành công — 3 feature views được đăng ký đầy đủ", pts: 5 },
-    { id: "c11", nb: "04_feast_feature_store", criterion: "materialize-incremental thành công đẩy dữ liệu vào Online Store", pts: 5 },
-    { id: "c12", nb: "04_feast_feature_store", criterion: "get_online_features() trả về dict hợp lệ cho user_id=u_001", pts: 5 },
-    { id: "c13", nb: "04_feast_feature_store", criterion: "Đo lường 100-call online lookup P99 (P99 < 10ms = full credit)", pts: 5 },
-    { id: "c14", nb: "04_feast_feature_store", criterion: "Point-in-Time join qua get_historical_features() trả về đúng 3 dòng x N features", pts: 5 },
+    { id: "c8", nb: "03_search_api_benchmark", criterion: "Bảng độ trễ P50/P95/P99 cho 3 chế độ (đo lường phía server)", pts: 5 },
+    { id: "c9", nb: "03_search_api_benchmark", criterion: "Hybrid P99 server-side < 50ms sau khi warm-up", pts: 5 },
+    { id: "c10", nb: "04_feast_feature_store", criterion: "feast apply thành công — 3 feature views được đăng ký đầy đủ", pts: 3 },
+    { id: "c11", nb: "04_feast_feature_store", criterion: "materialize-incremental thành công đẩy dữ liệu vào Online Store", pts: 3 },
+    { id: "c12", nb: "04_feast_feature_store", criterion: "get_online_features() trả về dict hợp lệ cho user_id=u_001", pts: 3 },
+    { id: "c13", nb: "04_feast_feature_store", criterion: "Đo lường 100-call online lookup P99 (P99 < 10ms = full credit)", pts: 3 },
+    { id: "c14", nb: "04_feast_feature_store", criterion: "Point-in-Time join qua get_historical_features() trả về đúng 3 dòng x N features", pts: 3 },
     { id: "c15", nb: "Tất cả Notebooks", criterion: "Chạy sạch tái lập: bash setup-lite.sh && make benchmark", pts: 5 }
   ],
-  
-  // Exact 1-to-1 match with rubric.md (Advanced total = 50 pts)
   rubricAdvanced: [
     { id: "a1", nb: "05_filtered_search", criterion: "Bảng recall theo độ chọn lọc: Post-filter giảm rõ rệt khi filter chặt, Filtered-ANN giữ 1.00", pts: 5 },
-    { id: "a2", nb: "05_filtered_search", criterion: "Over-fetch ladder cho thấy fetch_k phải ≈ 50% corpus mới cứu được recall", pts: 5 },
+    { id: "a2", nb: "05_filtered_search", criterion: "Over-fetch ladder cho thấy fetch_k phải ≈ 50% corpus mới cứu được recall", pts: 3 },
     { id: "a3", nb: "06_agent_retrieval", criterion: "Bảng 3 chiến lược ở cùng ngân sách 16 docs: Agentic > Single-shot cả recall lẫn balance", pts: 5 },
-    { id: "a4", nb: "06_agent_retrieval", criterion: "Giải thích được vì sao agentic (+filter) thấp hơn agentic (no filter)", pts: 4 },
-    { id: "a5", nb: "06_agent_retrieval", criterion: "build_context() chạy được, in ra cả feature (Feast) lẫn doc_ids (Qdrant)", pts: 3 },
-    { id: "a6", nb: "07_semantic_cache", criterion: "Bảng sweep có cả hai cột: tỷ lệ tiết kiệm và tỷ lệ trả lời sai", pts: 5 },
-    { id: "a7", nb: "07_semantic_cache", criterion: "Chọn được ngưỡng có lý cho corpus + giải thích vì sao 0.75 chưa đủ", pts: 4 },
-    { id: "a8", nb: "07_semantic_cache", criterion: "Demo rò chéo tenant: rò rỉ khi namespaced=False, MISS an toàn khi True", pts: 3 },
-    { id: "a9", nb: "08_feature_engineering", criterion: "Bảng leakage: target-naive gap > 0.30 trên session_id, in-fold ≈ 0", pts: 4 },
-    { id: "a10", nb: "08_feature_engineering", criterion: "PIT vs latest join: báo cáo % dòng rò + chênh lệch AUC", pts: 4 },
-    { id: "a11", nb: "08_feature_engineering", criterion: "On-demand feature view: cùng user, hai amount → hai amount_vs_avg khác nhau", pts: 4 },
-    { id: "a12", nb: "Toàn bộ Tests", criterion: "make test và make verify-lite đều xanh (pass 100%) trên máy sạch", pts: 4 }
+    { id: "a4", nb: "06_agent_retrieval", criterion: "Giải thích được vì sao agentic (+filter) thấp hơn agentic (no filter)", pts: 3 },
+    { id: "a5", nb: "06_agent_retrieval", criterion: "build_context() chạy được, in ra cả feature (Feast) lẫn doc_ids (Qdrant)", pts: 2 },
+    { id: "a6", nb: "07_semantic_cache", criterion: "Bảng sweep có cả hai cột: tỷ lệ tiết kiệm và tỷ lệ trả lời sai", pts: 3 },
+    { id: "a7", nb: "07_semantic_cache", criterion: "Chọn được ngưỡng có lý cho corpus + giải thích vì sao 0.75 chưa đủ", pts: 2 },
+    { id: "a8", nb: "07_semantic_cache", criterion: "Demo rò chéo tenant: rò rỉ khi namespaced=False, MISS an toàn khi True", pts: 2 },
+    { id: "a9", nb: "08_feature_engineering", criterion: "Bảng leakage: target-naive gap > 0.30 trên session_id, in-fold ≈ 0", pts: 2 },
+    { id: "a10", nb: "08_feature_engineering", criterion: "PIT vs latest join: báo cáo % dòng rò + chênh lệch AUC", pts: 1 },
+    { id: "a11", nb: "08_feature_engineering", criterion: "On-demand feature view: cùng user, hai amount → hai amount_vs_avg khác nhau", pts: 1 },
+    { id: "a12", nb: "Toàn bộ Tests", criterion: "make test và make verify-lite đều xanh (pass 100%) trên máy sạch", pts: 1 }
   ],
-  
-  // Exact 1-to-1 match with rubric.md (Bonus total = 20 pts)
   rubricBonus: [
-    { id: "b1", criterion: "bonus/ARCHITECTURE.md tồn tại, ≥ 600 từ, có sơ đồ kiến trúc", pts: 3 },
+    { id: "b1", criterion: "bonus/ARCHITECTURE.md tồn tại, ≥ 600 từ, có sơ đồ kiến trúc mermaid/ascii", pts: 3 },
     { id: "b2", criterion: "3 quyết định kiến trúc nêu rõ tradeoff rõ ràng (X vs Y, tại sao chọn X)", pts: 6 },
     { id: "b3", criterion: "Ít nhất 1 quyết định thể hiện hiểu biết sâu về ngữ cảnh tiếng Việt", pts: 2 },
     { id: "b4", criterion: "Nêu đích danh phương án thay thế bị bác bỏ (Rejected Alternative) kèm lý do", pts: 2 },
     { id: "b5", criterion: "bonus/agent.py chạy được (HybridMemoryAgent.remember() + .recall())", pts: 4 },
     { id: "b6", criterion: "bonus/demo.py kết thúc exit code 0 với 5 câu query in ra kết quả", pts: 3 }
   ],
-
   antiPatterns: [
     {
       title: "1. Rank 0-based trong công thức RRF",
@@ -99,7 +121,6 @@ const LAB_19_DATA = {
       desc: "Hệ thống LMS của VinUni chấm tự động. Nếu link repo GitHub để Private, grader không thể tải code về chấm và bài sẽ nhận điểm 0."
     }
   ],
-
   quizzes: [
     {
       id: "q1",
